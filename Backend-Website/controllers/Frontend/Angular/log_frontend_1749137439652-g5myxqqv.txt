@@ -1,0 +1,2375 @@
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>echo ===== Setting up Angular Frontend ===== 
+===== Setting up Angular Frontend =====
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>setlocal enabledelayedexpansion 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "ROOT_DIR=C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\generated\1749137439652-g5myxqqv" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "host=cluster0.3isme4y.mongodb.net" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "DdbName=DataTest" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "USERNAME=glilamouna" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "PASSWORD=rC0mE7" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "PORT=" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "scriptDir=C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\"  
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "projectDir=C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "projectName=angular-project" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "FRONTEND_DIR=C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\generated\1749137439652-g5myxqqv" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "jsonFile=C:\Users\mouna\AppData\Local\Temp\request.json" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>echo {"host":"cluster0.3isme4y.mongodb.net","dbName":"DataTest","username":"glilamouna","password":"rC0mE7"}  1>"C:\Users\mouna\AppData\Local\Temp\request.json" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set "apiUrl=http://localhost:5000/api/tablenames" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>curl -s -X POST -H "Content-Type: application/json" -d "@C:\Users\mouna\AppData\Local\Temp\request.json" http://localhost:5000/api/tablenames  1>"C:\Users\mouna\AppData\Local\Temp\tablenames.json" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>del "C:\Users\mouna\AppData\Local\Temp\request.json" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>if errorlevel 1 (
+echo Failed to retrieve data from the API!  
+ exit /b 
+) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>set items= 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>for /F "delims=" %i in ('findstr /r /c:"\".*\"" "C:\Users\mouna\AppData\Local\Temp\tablenames.json"') do (
+set name=%i  
+ set name=!name:"=!  
+ set name=!name:[=!  
+ set name=!name:]=!  
+ set name=!name:_=!  
+ set name=!name:-=!  
+ set name=!name:.=!  
+ set name=!name:'=!  
+ set name=!name:`=!  
+ set items=!items! !name! 
+) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>(
+set name=["clients","deliveries","employees","orders","payments","tickets","transactions","invoices","products"]  
+ set name=!name:"=!  
+ set name=!name:[=!  
+ set name=!name:]=!  
+ set name=!name:_=!  
+ set name=!name:-=!  
+ set name=!name:.=!  
+ set name=!name:'=!  
+ set name=!name:`=!  
+ set items=!items! !name! 
+) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>if " clients,deliveries,employees,orders,payments,tickets,transactions,invoices,products" == "" (
+echo Failed to parse table names from the API!  
+ del "C:\Users\mouna\AppData\Local\Temp\tablenames.json"  
+ exit /b 
+) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>del "C:\Users\mouna\AppData\Local\Temp\tablenames.json" 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular>if not exist "C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project" (
+echo Creating Angular project...  
+ ng new angular-project  --routing --style=scss --skip-install --defaults  
+ cd "C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project"  
+ echo body {  1>src\styles.scss  
+ echo background: #d9ecff ; 1>>src\styles.scss  
+ echo margin: 0; 1>>src\styles.scss  
+ echo padding: 0; 1>>src\styles.scss  
+ echo font-family: Arial, sans-serif; 1>>src\styles.scss  
+ echo } 1>>src\styles.scss  
+ echo import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';  1>src\app\app.config.ts  
+ echo import { provideRouter } from '@angular/router';  1>>src\app\app.config.ts  
+ echo import { routes } from './app.routes';  1>>src\app\app.config.ts  
+ echo import { provideHttpClient } from '@angular/common/http';  1>>src\app\app.config.ts  
+ echo export const appConfig: ApplicationConfig = {  1>>src\app\app.config.ts  
+ echo   providers: [  1>>src\app\app.config.ts  
+ echo     provideZoneChangeDetection({ eventCoalescing: true }),  1>>src\app\app.config.ts  
+ echo     provideRouter(routes),  1>>src\app\app.config.ts  
+ echo     provideHttpClient()  1>>src\app\app.config.ts  
+ echo   ]  1>>src\app\app.config.ts  
+ echo };  1>>src\app\app.config.ts  
+ echo //app.routes  1>src\app\app.routes.ts  
+ echo import { Routes } from '@angular/router';  1>>src\app\app.routes.ts  
+ echo import { AdminComponent } from './admin/admin.component';  1>>src\app\app.routes.ts  
+ echo import { SidebarComponent } from './sidebar/sidebar.component';  1>>src\app\app.routes.ts  
+ echo import { UpdateComponent } from './update/update.component';  1>>src\app\app.routes.ts  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo import { %iComponent } from './%i/%i.component';  1>>src\app\app.routes.ts )  
+ echo export const routes: Routes = [  1>>src\app\app.routes.ts  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo   { path: '%i', component: %iComponent },  1>>src\app\app.routes.ts )  
+ echo { path: 'admin', component: AdminComponent },  1>>src\app\app.routes.ts  
+ echo { path: 'sidebar', component: SidebarComponent},  1>>src\app\app.routes.ts  
+ echo { path: 'update/:table/:id', component: UpdateComponent },  1>>src\app\app.routes.ts  
+ echo { path: '', redirectTo: '/admin', pathMatch: 'full' }  1>>src\app\app.routes.ts  
+ echo ];  1>>src\app\app.routes.ts  
+ echo <div class="layout">  1>src\app\app.component.html  
+ echo    <app-sidebar></app-sidebar>  1>>src\app\app.component.html  
+ echo    <div class="content">  1>>src\app\app.component.html  
+ echo     <nav>  1>>src\app\app.component.html  
+ echo      <a routerLink="/admin" routerLinkActive="active-link"></a>  1>>src\app\app.component.html  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo   <a routerLink="/%i"></a>  1>>src\app\app.component.html )  
+ echo       <!-- Search Bar -->  1>>src\app\app.component.html  
+ echo     <input type="text" placeholder="🔍Search..." class="search-bar" />  1>>src\app\app.component.html  
+ echo     </nav>  1>>src\app\app.component.html  
+ echo    <router-outlet></router-outlet>   1>>src\app\app.component.html  
+ echo    </div>  1>>src\app\app.component.html  
+ echo </div>  1>>src\app\app.component.html  
+ echo import { Component } from '@angular/core';  1>src\app\app.component.ts  
+ echo import { RouterOutlet } from '@angular/router';  1>>src\app\app.component.ts  
+ echo import { AdminComponent } from './admin/admin.component';  1>>src\app\app.component.ts  
+ echo import { SidebarComponent } from './sidebar/sidebar.component';  1>>src\app\app.component.ts  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo import { %iComponent } from './%i/%i.component';  1>>src\app\app.component.ts )  
+ echo @Component({  1>>src\app\app.component.ts  
+ echo     selector: 'app-root',  1>>src\app\app.component.ts  
+ echo     standalone: true,  1>>src\app\app.component.ts  
+ echo     imports:[  1>>src\app\app.component.ts  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo     %iComponent,  1>>src\app\app.component.ts )  
+ echo     AdminComponent,  1>>src\app\app.component.ts  
+ echo     SidebarComponent,  1>>src\app\app.component.ts  
+ echo     RouterOutlet  1>>src\app\app.component.ts  
+ echo   ],  1>>src\app\app.component.ts  
+ echo   templateUrl: './app.component.html',  1>>src\app\app.component.ts  
+ echo   styleUrls: ['./app.component.scss']  1>>src\app\app.component.ts  
+ echo  })  1>>src\app\app.component.ts  
+ echo export class AppComponent {  1>>src\app\app.component.ts  
+ echo   title = 'user-test';  1>>src\app\app.component.ts  
+ echo }  1>>src\app\app.component.ts  
+ if errorlevel 1 (
+echo Failed to create Angular project!  
+ exit /b 
+)  
+ echo /* General Layout */   1>src\app\app.component.scss  
+ echo .layout {  1>>src\app\app.component.scss  
+ echo     display: flex;  1>>src\app\app.component.scss  
+ echo     height: 100vh;  1>>src\app\app.component.scss  
+ echo     margin: 0;  1>>src\app\app.component.scss  
+ echo     padding: 0;  1>>src\app\app.component.scss  
+ echo     background-color: #d9ecff;  1>>src\app\app.component.scss  
+ echo     .content {  1>>src\app\app.component.scss  
+ echo         flex: 1;  1>>src\app\app.component.scss  
+ echo         margin-left: 200px;  1>>src\app\app.component.scss  
+ echo         padding: 30px;  1>>src\app\app.component.scss  
+ echo     }  1>>src\app\app.component.scss  
+ echo     .search-bar { 1>>src\app\app.component.scss  
+ echo         padding: 8px 16px; 1>>src\app\app.component.scss  
+ echo         margin-left: auto; 1>>src\app\app.component.scss  
+ echo         border-radius: 50px; 1>>src\app\app.component.scss  
+ echo         border: 1px solid #ccc; 1>>src\app\app.component.scss  
+ echo         font-size: 14px; 1>>src\app\app.component.scss  
+ echo         width: 220px; 1>>src\app\app.component.scss  
+ echo         outline: none; 1>>src\app\app.component.scss  
+ echo         background-color: #fff; 1>>src\app\app.component.scss  
+ echo         box-shadow: 0 2px 4px rgba(0,0,0,0.1); 1>>src\app\app.component.scss  
+ echo         } 1>>src\app\app.component.scss  
+ echo }  1>>src\app\app.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\app.component.scss  
+ echo     .layout {  1>>src\app\app.component.scss  
+ echo         flex-direction: column;  1>>src\app\app.component.scss  
+ echo         .sidebar {  1>>src\app\app.component.scss  
+ echo             position: relative;  1>>src\app\app.component.scss  
+ echo             width: 100%;  1>>src\app\app.component.scss  
+ echo             flex-direction: row;  1>>src\app\app.component.scss  
+ echo             padding: 10px;  1>>src\app\app.component.scss  
+ echo             h2 { font-size: 18px; margin: 0 10px 0 0; }  1>>src\app\app.component.scss  
+ echo             nav ul { display: flex; justify-content: space-around; flex: 1; li { margin: 0; } }  1>>src\app\app.component.scss  
+ echo         }  1>>src\app\app.component.scss  
+ echo         .content {  1>>src\app\app.component.scss  
+ echo             margin : 0;  1>>src\app\app.component.scss  
+ echo             padding: 10px;  1>>src\app\app.component.scss  
+ echo             .top-nav { flex-wrap: wrap; a { margin: 5px; font-size: 14px; } }  1>>src\app\app.component.scss  
+ echo         }  1>>src\app\app.component.scss  
+ echo     }  1>>src\app\app.component.scss  
+ echo }  1>>src\app\app.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\app.component.scss  
+ echo     .layout {  1>>src\app\app.component.scss  
+ echo         .sidebar { display: none; }  /* hide sidebar entirely */  1>>src\app\app.component.scss  
+ echo         .content {  1>>src\app\app.component.scss  
+ echo             margin: 0;  1>>src\app\app.component.scss  
+ echo             .top-nav {  1>>src\app\app.component.scss  
+ echo                 justify-content: center;  1>>src\app\app.component.scss  
+ echo                 a { flex: 1 0 45%; text-align: center; padding: 8px; font-size: 13px; }  1>>src\app\app.component.scss  
+ echo             }  1>>src\app\app.component.scss  
+ echo         }  1>>src\app\app.component.scss  
+ echo     }  1>>src\app\app.component.scss  
+ echo }  1>>src\app\app.component.scss  
+ echo Angular project "angular-project" created successfully.  
+ echo ===== Generating components based on the list =====  
+ ng g c sidebar  
+ ng g c admin  
+ ng g c update  
+ echo <div class="admin-dashboard">  1>src\app\admin\admin.component.html  
+ echo <p>⚙️Admin Dashboard</p>  1>>src\app\admin\admin.component.html  
+ echo <table border="1">   1>>src\app\admin\admin.component.html  
+ echo   <thead>  1>>src\app\admin\admin.component.html  
+ echo     <tr>  1>>src\app\admin\admin.component.html  
+ echo       <th>Table Name</th>  1>>src\app\admin\admin.component.html  
+ echo       <th>Actions</th>  1>>src\app\admin\admin.component.html  
+ echo     </tr>  1>>src\app\admin\admin.component.html  
+ echo   </thead>  1>>src\app\admin\admin.component.html  
+ echo   <tbody>  1>>src\app\admin\admin.component.html  
+ echo     <tr *ngFor="let table of tables">  1>>src\app\admin\admin.component.html  
+ echo       <td>{{ table }}</td>  1>>src\app\admin\admin.component.html  
+ echo       <td>  1>>src\app\admin\admin.component.html  
+ echo         <button (click)="viewTable(table)" class="btn">  1>>src\app\admin\admin.component.html  
+ echo           <i class="fas fa-eye"></i> View  1>>src\app\admin\admin.component.html  
+ echo         </button>  1>>src\app\admin\admin.component.html  
+ echo         <button (click)="deleteTable(table)" class="btn">  1>>src\app\admin\admin.component.html  
+ echo           <i class="fas fa-trash-alt"></i> Delete  1>>src\app\admin\admin.component.html  
+ echo         </button>  1>>src\app\admin\admin.component.html  
+ echo       </td>  1>>src\app\admin\admin.component.html  
+ echo     </tr>  1>>src\app\admin\admin.component.html  
+ echo   </tbody>  1>>src\app\admin\admin.component.html  
+ echo </table>  1>>src\app\admin\admin.component.html  
+ echo </div>  
+ echo  /* admin styling*/  1>src\app\admin\admin.component.Scss  
+ echo .admin-dashboard {  1>>src\app\admin\admin.component.scss  
+ echo   background: #edf6ff;  1>>src\app\admin\admin.component.scss  
+ echo   margin: 20px auto;  1>>src\app\admin\admin.component.scss  
+ echo   max-width: 80%;  1>>src\app\admin\admin.component.scss  
+ echo   padding: 30px;  1>>src\app\admin\admin.component.scss  
+ echo   border-radius: 19px;  1>>src\app\admin\admin.component.scss  
+ echo   box-shadow: 0 4px 8px rgba(0,0,0,0.1);  1>>src\app\admin\admin.component.scss  
+ echo   p {  1>>src\app\admin\admin.component.scss  
+ echo     text-align: center;  1>>src\app\admin\admin.component.scss  
+ echo     font: bold 28px Arial, sans-serif;  1>>src\app\admin\admin.component.scss  
+ echo     margin-bottom: 20px;  1>>src\app\admin\admin.component.scss  
+ echo     color: #34495e;  1>>src\app\admin\admin.component.scss  
+ echo   }  1>>src\app\admin\admin.component.scss  
+ echo   table {  1>>src\app\admin\admin.component.scss  
+ echo     width: 100%;  1>>src\app\admin\admin.component.scss  
+ echo     margin-top: 10px;  1>>src\app\admin\admin.component.scss  
+ echo     border-collapse: collapse;  1>>src\app\admin\admin.component.scss  
+ echo     border-radius: 8px;  1>>src\app\admin\admin.component.scss  
+ echo     overflow: hidden;  1>>src\app\admin\admin.component.scss  
+ echo     box-shadow: 0 2px 4px rgba(0,0,0,0.1);  1>>src\app\admin\admin.component.scss  
+ echo     thead {  1>>src\app\admin\admin.component.scss  
+ echo       background: #014e85;  1>>src\app\admin\admin.component.scss  
+ echo       color: #fff;  1>>src\app\admin\admin.component.scss  
+ echo       th {  1>>src\app\admin\admin.component.scss  
+ echo         padding: 12px 16px;  1>>src\app\admin\admin.component.scss  
+ echo         font-size: 16px;  1>>src\app\admin\admin.component.scss  
+ echo         &:nth-child(2) { text-align: center; }  1>>src\app\admin\admin.component.scss  
+ echo       }  1>>src\app\admin\admin.component.scss  
+ echo     }  1>>src\app\admin\admin.component.scss  
+ echo     tbody {  1>>src\app\admin\admin.component.scss  
+ echo       tr {  1>>src\app\admin\admin.component.scss  
+ echo         transition: background .2s;  1>>src\app\admin\admin.component.scss  
+ echo         &:nth-child(even) { background: #f9f9f9; }  1>>src\app\admin\admin.component.scss  
+ echo         &:hover { background: #eaf2f8; }  1>>src\app\admin\admin.component.scss  
+ echo         td {  1>>src\app\admin\admin.component.scss  
+ echo           padding: 12px 16px;  1>>src\app\admin\admin.component.scss  
+ echo           font-size: 14px;  1>>src\app\admin\admin.component.scss  
+ echo           border-bottom: 1px solid #ddd;  1>>src\app\admin\admin.component.scss  
+ echo           &:nth-child(2) { text-align: center; }  1>>src\app\admin\admin.component.scss  
+ echo         }  1>>src\app\admin\admin.component.scss  
+ echo       }  1>>src\app\admin\admin.component.scss  
+ echo     }  1>>src\app\admin\admin.component.scss  
+ echo   }  1>>src\app\admin\admin.component.scss  
+ echo   .btn {  1>>src\app\admin\admin.component.scss  
+ echo     background: #d6eaff;  1>>src\app\admin\admin.component.scss  
+ echo     color: #34495e;  1>>src\app\admin\admin.component.scss  
+ echo     border: 1px solid #a9d5ff;  1>>src\app\admin\admin.component.scss  
+ echo     padding: 7px 55px;  1>>src\app\admin\admin.component.scss  
+ echo     font-size: 14px;  1>>src\app\admin\admin.component.scss  
+ echo     border-radius: 6px;  1>>src\app\admin\admin.component.scss  
+ echo     cursor: pointer;  1>>src\app\admin\admin.component.scss  
+ echo     transition: .3s;  1>>src\app\admin\admin.component.scss  
+ echo     margin: 0 6px;  1>>src\app\admin\admin.component.scss  
+ echo     display: inline-flex;  1>>src\app\admin\admin.component.scss  
+ echo     align-items: center;  1>>src\app\admin\admin.component.scss  
+ echo     justify-content: center;  1>>src\app\admin\admin.component.scss  
+ echo     gap: 6px;  1>>src\app\admin\admin.component.scss  
+ echo     i { font-size: 16px; }  1>>src\app\admin\admin.component.scss  
+ echo     &:hover {  1>>src\app\admin\admin.component.scss  
+ echo       background: #b8d8ff;  1>>src\app\admin\admin.component.scss  
+ echo       transform: translateY(-2px);  1>>src\app\admin\admin.component.scss  
+ echo       box-shadow: 0 2px 4px rgba(0,0,0,0.1);  1>>src\app\admin\admin.component.scss  
+ echo     }  1>>src\app\admin\admin.component.scss  
+ echo     & + & { margin-left: 12px; }  1>>src\app\admin\admin.component.scss  
+ echo   }  1>>src\app\admin\admin.component.scss  
+ echo   @media (max-width: 768px) {  1>>src\app\admin\admin.component.scss  
+ echo     padding: 10px;  1>>src\app\admin\admin.component.scss  
+ echo     margin: 10px;  1>>src\app\admin\admin.component.scss  
+ echo     p { font-size: 24px; }  1>>src\app\admin\admin.component.scss  
+ echo     table {  1>>src\app\admin\admin.component.scss  
+ echo       thead th, tbody td {  1>>src\app\admin\admin.component.scss  
+ echo         padding: 8px 10px;  1>>src\app\admin\admin.component.scss  
+ echo         font-size: 13px;  1>>src\app\admin\admin.component.scss  
+ echo       }  1>>src\app\admin\admin.component.scss  
+ echo     }  1>>src\app\admin\admin.component.scss  
+ echo     .btn {  1>>src\app\admin\admin.component.scss  
+ echo       display: block;  1>>src\app\admin\admin.component.scss  
+ echo       width: 100%;  1>>src\app\admin\admin.component.scss  
+ echo       margin: 5px 0;  1>>src\app\admin\admin.component.scss  
+ echo     }  1>>src\app\admin\admin.component.scss  
+ echo   }  1>>src\app\admin\admin.component.scss  
+ echo }  1>>src\app\admin\admin.component.scss  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\admin\admin.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\admin\admin.component.ts  
+ echo import { CommonModule } from '@angular/common';   1>>src\app\admin\admin.component.ts  
+ echo import { Router } from '@angular/router';   1>>src\app\admin\admin.component.ts  
+ echo @Component({   1>>src\app\admin\admin.component.ts  
+ echo   selector: 'app-admin',   1>>src\app\admin\admin.component.ts  
+ echo   standalone: true,  1>>src\app\admin\admin.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\admin\admin.component.ts  
+ echo   templateUrl: './admin.component.html',  1>>src\app\admin\admin.component.ts  
+ echo   styleUrls: ['./admin.component.scss']   1>>src\app\admin\admin.component.ts  
+ echo }   1>>src\app\admin\admin.component.ts  
+ echo )   1>>src\app\admin\admin.component.ts  
+ echo export class AdminComponent implements OnInit {    1>>src\app\admin\admin.component.ts  
+ echo   tables: string[] = [];  1>>src\app\admin\admin.component.ts  
+ echo   dataMap: any = {};   1>>src\app\admin\admin.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}   1>>src\app\admin\admin.component.ts  
+ echo   ngOnInit(): void {   1>>src\app\admin\admin.component.ts  
+ echo       this.service.getUsers().subscribe(data => {   1>>src\app\admin\admin.component.ts  
+ echo       console.log("Données reçues:", data );   1>>src\app\admin\admin.component.ts  
+ echo       if (data && typeof data === "object") {   1>>src\app\admin\admin.component.ts  
+ echo         this.tables = Object.keys(data);   1>>src\app\admin\admin.component.ts  
+ echo         this.dataMap = data;   1>>src\app\admin\admin.component.ts  
+ echo         } else {   1>>src\app\admin\admin.component.ts  
+ echo           this.tables = [];    1>>src\app\admin\admin.component.ts  
+ echo           this.dataMap = {};    1>>src\app\admin\admin.component.ts  
+ echo         }    1>>src\app\admin\admin.component.ts  
+ echo       }    1>>src\app\admin\admin.component.ts  
+ echo       );    1>>src\app\admin\admin.component.ts  
+ echo     }   1>>src\app\admin\admin.component.ts  
+ echo  // Redirection dynamique vers la route correspondante  1>>src\app\admin\admin.component.ts  
+ echo       viewTable(table: string): void { 1>>src\app\admin\admin.component.ts  
+ echo         const route = `/${table.toLowerCase()}`; // Ex: "Students" => "/students" 1>>src\app\admin\admin.component.ts  
+ echo         this.router.navigate([route]); 1>>src\app\admin\admin.component.ts  
+ echo } 1>>src\app\admin\admin.component.ts  
+ echo deleteTable(table: string): void { 1>>src\app\admin\admin.component.ts  
+ echo  if (confirm(`Es-tu sûr de vouloir supprimer '${table}' ?`)) {  1>>src\app\admin\admin.component.ts  
+ echo    this.service.deleteTable(table).subscribe( 1>>src\app\admin\admin.component.ts  
+ echo     (response) => { 1>>src\app\admin\admin.component.ts  
+ echo       console.log('Table supprimée:', response);  1>>src\app\admin\admin.component.ts  
+ echo       this.tables = this.tables.filter(t => t !== table);  1>>src\app\admin\admin.component.ts  
+ echo       delete this.dataMap[table];  1>>src\app\admin\admin.component.ts  
+ echo       alert(`Table ${table} supprimée avec succès !`);  1>>src\app\admin\admin.component.ts  
+ echo      },  1>>src\app\admin\admin.component.ts  
+ echo      (error) => {  1>>src\app\admin\admin.component.ts  
+ echo        console.error('Erreur lors de la suppression de la table:', error);  1>>src\app\admin\admin.component.ts  
+ echo        alert(`Erreur lors de la suppression de la table '${table}'`);  1>>src\app\admin\admin.component.ts  
+ echo      }  1>>src\app\admin\admin.component.ts  
+ echo    );  1>>src\app\admin\admin.component.ts  
+ echo  } 1>>src\app\admin\admin.component.ts  
+ echo } 1>>src\app\admin\admin.component.ts  
+ echo } 1>>src\app\admin\admin.component.ts  
+ echo <div class="sidebar">   1>src\app\sidebar\sidebar.component.html  
+ echo <h2>Admin Panel</h2>  1>>src\app\sidebar\sidebar.component.html  
+ echo <nav>  1>>src\app\sidebar\sidebar.component.html  
+ echo <ul>  1>>src\app\sidebar\sidebar.component.html  
+ echo   <li><button (click)="navigateToDashboard()" class="nav-button">🛠️Dashboard</button></li>  1>>src\app\sidebar\sidebar.component.html  
+ echo </ul>  1>>src\app\sidebar\sidebar.component.html  
+ echo </nav>  1>>src\app\sidebar\sidebar.component.html  
+ echo </div>  1>>src\app\sidebar\sidebar.component.html  
+ echo /* Sidebar Styling */  1>src\app\sidebar\sidebar.component.scss  
+ echo .sidebar {  1>>src\app\sidebar\sidebar.component.scss  
+ echo     width: 200px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     height: 100vh;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     background: #014e85;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     color: #ecf0f1;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     position: fixed;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     top: 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     left: 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     display: flex;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     flex-direction: column;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     align-items: center;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     padding: 16px 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.25);  1>>src\app\sidebar\sidebar.component.scss  
+ echo     h2 {  1>>src\app\sidebar\sidebar.component.scss  
+ echo         font-size: 18px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         margin: 0 0 16px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         text-transform: uppercase;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         letter-spacing: 0.5px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo     }  1>>src\app\sidebar\sidebar.component.scss  
+ echo     nav ul {  1>>src\app\sidebar\sidebar.component.scss  
+ echo         list-style: none;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         padding: 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         width: 100%;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         display: flex;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         flex-direction: column;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         li {  1>>src\app\sidebar\sidebar.component.scss  
+ echo             margin: 10px 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo             a {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 display: block;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 padding: 8px 14px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 text-decoration: none;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 color: inherit;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 font-size: 14px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 border-radius: 6px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 transition: background 0.3s;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 &:hover, &.active-link { background: #1a4d75; }  1>>src\app\sidebar\sidebar.component.scss  
+ echo             }  1>>src\app\sidebar\sidebar.component.scss  
+ echo             .nav-button {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 display: block;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 padding: 8px 14px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 background: #fff;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 color: #014e85;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 border: none;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 border-radius: 30px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 font-size: 14px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 cursor: pointer;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 width: 100%;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 text-align: left;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 transition: 0.3s;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 &:hover {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     background: #ecf0f1;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 }  1>>src\app\sidebar\sidebar.component.scss  
+ echo             }  1>>src\app\sidebar\sidebar.component.scss  
+ echo         }  1>>src\app\sidebar\sidebar.component.scss  
+ echo     }  1>>src\app\sidebar\sidebar.component.scss  
+ echo }  1>>src\app\sidebar\sidebar.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\sidebar\sidebar.component.scss  
+ echo     .sidebar {  1>>src\app\sidebar\sidebar.component.scss  
+ echo         width: 100%;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         height: auto;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         position: relative;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         flex-direction: row;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         padding: 10px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         h2 { font-size: 16px; margin: 0 12px 0 0; }  1>>src\app\sidebar\sidebar.component.scss  
+ echo         nav ul {  1>>src\app\sidebar\sidebar.component.scss  
+ echo             flex-direction: row;  1>>src\app\sidebar\sidebar.component.scss  
+ echo             justify-content: space-around;  1>>src\app\sidebar\sidebar.component.scss  
+ echo             li {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 margin: 0;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 a {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     padding: 8px 10px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     font-size: 13px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 }  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 .nav-button {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     padding: 8px 10px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     font-size: 13px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     border-radius: 20px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 }  1>>src\app\sidebar\sidebar.component.scss  
+ echo             }  1>>src\app\sidebar\sidebar.component.scss  
+ echo         }  1>>src\app\sidebar\sidebar.component.scss  
+ echo     }  1>>src\app\sidebar\sidebar.component.scss  
+ echo }  1>>src\app\sidebar\sidebar.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\sidebar\sidebar.component.scss  
+ echo     .sidebar {  1>>src\app\sidebar\sidebar.component.scss  
+ echo         flex-wrap: wrap;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         padding: 8px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo         h2 { display: none; }  1>>src\app\sidebar\sidebar.component.scss  
+ echo         nav ul {  1>>src\app\sidebar\sidebar.component.scss  
+ echo             flex-wrap: wrap;  1>>src\app\sidebar\sidebar.component.scss  
+ echo             li {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 flex: 1 0 50%;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 a { padding: 6px; font-size: 12px; }  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 .nav-button {  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     padding: 6px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     font-size: 12px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                     border-radius: 20px;  1>>src\app\sidebar\sidebar.component.scss  
+ echo                 }  1>>src\app\sidebar\sidebar.component.scss  
+ echo             }  1>>src\app\sidebar\sidebar.component.scss  
+ echo         }  1>>src\app\sidebar\sidebar.component.scss  
+ echo     }  1>>src\app\sidebar\sidebar.component.scss  
+ echo }  1>>src\app\sidebar\sidebar.component.scss  
+ echo import { CommonModule } from '@angular/common';  1>src\app\sidebar\sidebar.component.ts  
+ echo import { Component } from '@angular/core';  1>>src\app\sidebar\sidebar.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\sidebar\sidebar.component.ts  
+ echo @Component({   1>>src\app\sidebar\sidebar.component.ts  
+ echo selector: 'app-sidebar',  1>>src\app\sidebar\sidebar.component.ts  
+ echo standalone: true,  1>>src\app\sidebar\sidebar.component.ts  
+ echo imports: [CommonModule],  1>>src\app\sidebar\sidebar.component.ts  
+ echo templateUrl: './sidebar.component.html',  1>>src\app\sidebar\sidebar.component.ts  
+ echo styleUrl: './sidebar.component.scss'  1>>src\app\sidebar\sidebar.component.ts  
+ echo })  1>>src\app\sidebar\sidebar.component.ts  
+ echo export class SidebarComponent {  1>>src\app\sidebar\sidebar.component.ts  
+ echo constructor(private router: Router) {}  1>>src\app\sidebar\sidebar.component.ts  
+ echo navigateToDashboard() {  1>>src\app\sidebar\sidebar.component.ts  
+ echo this.router.navigate(['/admin']);  1>>src\app\sidebar\sidebar.component.ts  
+ echo }  1>>src\app\sidebar\sidebar.component.ts  
+ echo }  1>>src\app\sidebar\sidebar.component.ts  
+ echo  clients,deliveries,employees,orders,payments,tickets,transactions,invoices,products  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (
+echo Generating component %i  
+ ng g c %i --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\%i\%i.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\%i\%i.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\%i\%i.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\%i\%i.component.ts  
+ echo @Component({  1>>src\app\%i\%i.component.ts  
+ echo   selector: 'app-%i',  1>>src\app\%i\%i.component.ts  
+ echo   standalone: true,  1>>src\app\%i\%i.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\%i\%i.component.ts  
+ echo   templateUrl: './%i.component.html',  1>>src\app\%i\%i.component.ts  
+ echo   styleUrls: ['./%i.component.scss']  1>>src\app\%i\%i.component.ts  
+ echo }  1>>src\app\%i\%i.component.ts  
+ echo )   1>>src\app\%i\%i.component.ts  
+ echo export class %iComponent implements OnInit {   1>>src\app\%i\%i.component.ts  
+ echo   tables: string[] = [];  1>>src\app\%i\%i.component.ts  
+ echo   dataMap: any = {};  1>>src\app\%i\%i.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\%i\%i.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\%i\%i.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\%i\%i.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\%i\%i.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\%i\%i.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\%i\%i.component.ts  
+ echo         this.dataMap = data;  1>>src\app\%i\%i.component.ts  
+ echo         } else {  1>>src\app\%i\%i.component.ts  
+ echo           this.tables = [];   1>>src\app\%i\%i.component.ts  
+ echo           this.dataMap = {};    1>>src\app\%i\%i.component.ts  
+ echo         }   1>>src\app\%i\%i.component.ts  
+ echo       }   1>>src\app\%i\%i.component.ts  
+ echo       );   1>>src\app\%i\%i.component.ts  
+ echo     }   1>>src\app\%i\%i.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\%i\%i.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\%i\%i.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\%i\%i.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\%i\%i.component.ts  
+ echo     }  1>>src\app\%i\%i.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\%i\%i.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\%i\%i.component.ts  
+ echo       return Object.values(row);   1>>src\app\%i\%i.component.ts  
+ echo   }   1>>src\app\%i\%i.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\%i\%i.component.ts  
+ echo     view%i(%i: any): void {  1>>src\app\%i\%i.component.ts  
+ echo     console.log('View %i:', %i);  1>>src\app\%i\%i.component.ts  
+ echo     alert(`Viewing %i: ${JSON.stringify(%i, null, 2)}`);  1>>src\app\%i\%i.component.ts  
+ echo }  1>>src\app\%i\%i.component.ts  
+ echo     update%i(%i: any): void {  1>>src\app\%i\%i.component.ts  
+ echo     this.router.navigate(['/update', '%i', %i._id]);  1>>src\app\%i\%i.component.ts  
+ echo   }  1>>src\app\%i\%i.component.ts  
+ echo     delete%i(%iId: string): void {  1>>src\app\%i\%i.component.ts  
+ echo     console.log('Delete %i ID:', %iId);  1>>src\app\%i\%i.component.ts  
+ echo     this.service.deleteItem('%i',%iId).subscribe(   1>>src\app\%i\%i.component.ts  
+ echo        response => {  1>>src\app\%i\%i.component.ts  
+ echo            console.log('%i deleted successfully', response);  1>>src\app\%i\%i.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\%i\%i.component.ts  
+ echo            this.dataMap['%i'] = this.dataMap['%i'].filter((%i: any) => %i._id !== %iId);  1>>src\app\%i\%i.component.ts  
+ echo            alert('%i Deleted!');  1>>src\app\%i\%i.component.ts  
+ echo        },  1>>src\app\%i\%i.component.ts  
+ echo        error => {  1>>src\app\%i\%i.component.ts  
+ echo            console.error('Error deleting %i:', error);  1>>src\app\%i\%i.component.ts  
+ echo            alert('Failed to delete %i!');  1>>src\app\%i\%i.component.ts  
+ echo        }   1>>src\app\%i\%i.component.ts  
+ echo     );  1>>src\app\%i\%i.component.ts  
+ echo }  1>>src\app\%i\%i.component.ts  
+ echo }  1>>src\app\%i\%i.component.ts  
+ echo <p>%i Table:</p>    1>src\app\%i\%i.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\%i\%i.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\%i\%i.component.html  
+ echo <table border="1" *ngIf="table === '%i'">  1>>src\app\%i\%i.component.html  
+ echo <thead >  1>>src\app\%i\%i.component.html  
+ echo <tr>  1>>src\app\%i\%i.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\%i\%i.component.html  
+ echo <th>Actions</th>  1>>src\app\%i\%i.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\%i\%i.component.html  
+ echo <tbody>  1>>src\app\%i\%i.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\%i\%i.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\%i\%i.component.html  
+ echo <td>   1>>src\app\%i\%i.component.html  
+ echo    <button (click)="view%i(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\%i\%i.component.html  
+ echo    <button (click)="update%i(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\%i\%i.component.html  
+ echo    <button (click)="delete%i(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\%i\%i.component.html  
+ echo </td>   1>>src\app\%i\%i.component.html  
+ echo </tr>  1>>src\app\%i\%i.component.html  
+ echo </tbody>  1>>src\app\%i\%i.component.html  
+ echo </table>  1>>src\app\%i\%i.component.html  
+ echo </div>  1>>src\app\%i\%i.component.html  
+ echo </div>  1>>src\app\%i\%i.component.html  
+ echo table {  1>>src\app\%i\%i.component.scss  
+ echo   width: 100%;  1>>src\app\%i\%i.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\%i\%i.component.scss  
+ echo   min-width: 500px;  1>>src\app\%i\%i.component.scss  
+ echo   table-layout: auto;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo th, td {  1>>src\app\%i\%i.component.scss  
+ echo   padding: 8px;  1>>src\app\%i\%i.component.scss  
+ echo   text-align: center;  1>>src\app\%i\%i.component.scss  
+ echo   font-size: 12px;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo thead {  1>>src\app\%i\%i.component.scss  
+ echo   background: #014e85;  1>>src\app\%i\%i.component.scss  
+ echo   color: #fff;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\%i\%i.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\%i\%i.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo tbody tr:hover {  1>>src\app\%i\%i.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo .btn {  1>>src\app\%i\%i.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\%i\%i.component.scss  
+ echo   font-size: 14px;  1>>src\app\%i\%i.component.scss  
+ echo   background: #d6eaff;  1>>src\app\%i\%i.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\%i\%i.component.scss  
+ echo   border-radius: 5px;  1>>src\app\%i\%i.component.scss  
+ echo   cursor: pointer;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo .btn:hover {  1>>src\app\%i\%i.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\%i\%i.component.scss  
+ echo   table {  1>>src\app\%i\%i.component.scss  
+ echo     min-width: 500px;  1>>src\app\%i\%i.component.scss  
+ echo   }  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\%i\%i.component.scss  
+ echo   table {  1>>src\app\%i\%i.component.scss  
+ echo     min-width: 400px;  1>>src\app\%i\%i.component.scss  
+ echo   }  1>>src\app\%i\%i.component.scss  
+ echo }  1>>src\app\%i\%i.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component %i  
+ exit /b 
+) 
+)  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\update\update.component.ts  
+ echo import { ActivatedRoute, Router } from '@angular/router';  1>>src\app\update\update.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\update\update.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\update\update.component.ts  
+ echo import { FormsModule } from '@angular/forms';  1>>src\app\update\update.component.ts  
+ echo @Component({  1>>src\app\update\update.component.ts  
+ echo  selector: 'app-update',  1>>src\app\update\update.component.ts  
+ echo  standalone: true,  1>>src\app\update\update.component.ts  
+ echo  imports: [CommonModule, FormsModule],  1>>src\app\update\update.component.ts  
+ echo  templateUrl: './update.component.html',  1>>src\app\update\update.component.ts  
+ echo  styleUrls: ['./update.component.scss']  1>>src\app\update\update.component.ts  
+ echo })  1>>src\app\update\update.component.ts  
+ echo export class UpdateComponent implements OnInit {  1>>src\app\update\update.component.ts  
+ echo  table: string = '';    1>>src\app\update\update.component.ts  
+ echo  itemId: string = ''; // ID of the item  1>>src\app\update\update.component.ts  
+ echo  itemData: any = {};  // Data of the item  1>>src\app\update\update.component.ts  
+ echo constructor(private route: ActivatedRoute, private service: SharedService, private router: Router) {}  1>>src\app\update\update.component.ts  
+ echo ngOnInit(): void {  1>>src\app\update\update.component.ts  
+ echo    this.table = this.route.snapshot.paramMap.get('table') || '';  1>>src\app\update\update.component.ts  
+ echo    this.itemId = this.route.snapshot.paramMap.get('id') || '';  1>>src\app\update\update.component.ts  
+ echo    if (this.table && this.itemId) {  1>>src\app\update\update.component.ts  
+ echo     this.service.getItemById(this.table, this.itemId).subscribe({  1>>src\app\update\update.component.ts  
+ echo        next: (data: any) => {  1>>src\app\update\update.component.ts  
+ echo        console.log(`Fetched ${this.table} Data:`, data);  1>>src\app\update\update.component.ts  
+ echo        if (data) {  1>>src\app\update\update.component.ts  
+ echo            this.itemData = { ...data };  1>>src\app\update\update.component.ts  
+ echo        } else {   1>>src\app\update\update.component.ts  
+ echo            console.warn(`No data found for ${this.table} with ID ${this.itemId}`);  1>>src\app\update\update.component.ts  
+ echo            alert(`Error: No data found!`);  1>>src\app\update\update.component.ts  
+ echo        }  1>>src\app\update\update.component.ts  
+ echo        },  1>>src\app\update\update.component.ts  
+ echo        error: (err) => {  1>>src\app\update\update.component.ts  
+ echo         console.error(`Error fetching ${this.table} data (Table: ${this.table}, ID: ${this.itemId})`, err);  1>>src\app\update\update.component.ts  
+ echo        alert(`An error occurred while fetching ${this.table} data.`);  1>>src\app\update\update.component.ts  
+ echo        }  1>>src\app\update\update.component.ts  
+ echo     });  1>>src\app\update\update.component.ts  
+ echo    }  1>>src\app\update\update.component.ts  
+ echo }  1>>src\app\update\update.component.ts  
+ echo updateItem() {  1>>src\app\update\update.component.ts  
+ echo    this.service.updateItemById(this.table, this.itemId, this.itemData).subscribe({  1>>src\app\update\update.component.ts  
+ echo      next: (response) => {  1>>src\app\update\update.component.ts  
+ echo        console.log("Item updated:", response);  1>>src\app\update\update.component.ts  
+ echo        alert("Item updated");  1>>src\app\update\update.component.ts  
+ echo        this.router.navigate(['/admin']); // ou où tu veux rediriger après  1>>src\app\update\update.component.ts  
+ echo      },  1>>src\app\update\update.component.ts  
+ echo      error: (err) => {  1>>src\app\update\update.component.ts  
+ echo        console.error("Erreur update :", err);  1>>src\app\update\update.component.ts  
+ echo        alert("Error while updating");  1>>src\app\update\update.component.ts  
+ echo      }  1>>src\app\update\update.component.ts  
+ echo    });  1>>src\app\update\update.component.ts  
+ echo  }  1>>src\app\update\update.component.ts  
+ echo  // Helper function to dynamically list fields  1>>src\app\update\update.component.ts  
+ echo  objectKeys(obj: any): string[] {  1>>src\app\update\update.component.ts  
+ echo   return obj ? Object.keys(obj) : [];  1>>src\app\update\update.component.ts  
+ echo  }  1>>src\app\update\update.component.ts  
+ echo }  1>>src\app\update\update.component.ts  
+ echo <h2>Update {{ table }}</h2>  1>src\app\update\update.component.html  
+ echo <form *ngIf="itemData && objectKeys(itemData).length > 0" (ngSubmit)="updateItem()">  1>>src\app\update\update.component.html  
+ echo <ng-container *ngFor="let key of objectKeys(itemData)">  1>>src\app\update\update.component.html  
+ echo    <div *ngIf="key !== '_id'">  1>>src\app\update\update.component.html  
+ echo     <label>{{ key }}:</label>  1>>src\app\update\update.component.html  
+ echo     <input type="text" [(ngModel)]="itemData[key]" [name]="key" />  1>>src\app\update\update.component.html  
+ echo </div>  1>>src\app\update\update.component.html  
+ echo </ng-container>      1>>src\app\update\update.component.html  
+ echo <button type="submit">Update</button>  1>>src\app\update\update.component.html  
+ echo </form>  1>>src\app\update\update.component.html  
+ echo /* General form container with sleek design */  1>src\app\update\update.component.scss  
+ echo /* General form container with sleek design */  1>>src\app\update\update.component.scss  
+ echo form {  1>>src\app\update\update.component.scss  
+ echo     max-width: 600px;  1>>src\app\update\update.component.scss  
+ echo     margin: 40px auto;  1>>src\app\update\update.component.scss  
+ echo     padding: 40px;  1>>src\app\update\update.component.scss  
+ echo     border-radius: 12px;  1>>src\app\update\update.component.scss  
+ echo     background: linear-gradient(135deg, #f5f4f4, #e8eff5);  1>>src\app\update\update.component.scss  
+ echo     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);  1>>src\app\update\update.component.scss  
+ echo     font-family: 'Roboto', sans-serif;  1>>src\app\update\update.component.scss  
+ echo     color: #333;  1>>src\app\update\update.component.scss  
+ echo     animation: fadeIn 0.8s ease-out;  1>>src\app\update\update.component.scss  
+ echo     transition: transform 0.3s ease, box-shadow 0.3s ease;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo @keyframes fadeIn {  1>>src\app\update\update.component.scss  
+ echo   from {  1>>src\app\update\update.component.scss  
+ echo     opacity: 0;  1>>src\app\update\update.component.scss  
+ echo     transform: translateY(-20px);  1>>src\app\update\update.component.scss  
+ echo   }  1>>src\app\update\update.component.scss  
+ echo   to {  1>>src\app\update\update.component.scss  
+ echo     opacity: 1;  1>>src\app\update\update.component.scss  
+ echo     transform: translateY(0);  1>>src\app\update\update.component.scss  
+ echo   }  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form:hover {  1>>src\app\update\update.component.scss  
+ echo   transform: translateY(-5px);  1>>src\app\update\update.component.scss  
+ echo   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo h2 {  1>>src\app\update\update.component.scss  
+ echo   font-size: 32px;  1>>src\app\update\update.component.scss  
+ echo   font-weight: bold;  1>>src\app\update\update.component.scss  
+ echo   text-align: center;  1>>src\app\update\update.component.scss  
+ echo   color: transparent;  1>>src\app\update\update.component.scss  
+ echo   background: linear-gradient(45deg, #00264d, #008C8C);  1>>src\app\update\update.component.scss  
+ echo   -webkit-background-clip: text;  1>>src\app\update\update.component.scss  
+ echo   background-clip: text;  1>>src\app\update\update.component.scss  
+ echo   text-transform: uppercase;  1>>src\app\update\update.component.scss  
+ echo   letter-spacing: 1.5px;  1>>src\app\update\update.component.scss  
+ echo   margin-bottom: 30px;  1>>src\app\update\update.component.scss  
+ echo   position: relative;  1>>src\app\update\update.component.scss  
+ echo   transition: transform 0.3s ease, color 0.3s ease;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo h2:hover {  1>>src\app\update\update.component.scss  
+ echo   transform: scale(1.05);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form label {  1>>src\app\update\update.component.scss  
+ echo   display: block;  1>>src\app\update\update.component.scss  
+ echo   font-size: 14px;  1>>src\app\update\update.component.scss  
+ echo   font-weight: bold;  1>>src\app\update\update.component.scss  
+ echo   margin-bottom: 8px;  1>>src\app\update\update.component.scss  
+ echo   color: #444;  1>>src\app\update\update.component.scss  
+ echo   text-transform: capitalize;  1>>src\app\update\update.component.scss  
+ echo   letter-spacing: 0.5px;  1>>src\app\update\update.component.scss  
+ echo   transition: color 0.3s ease;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form label:hover {  1>>src\app\update\update.component.scss  
+ echo   color: #008C8C;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form input {  1>>src\app\update\update.component.scss  
+ echo   width: 100%;  1>>src\app\update\update.component.scss  
+ echo   padding: 12px;  1>>src\app\update\update.component.scss  
+ echo   border: none;  1>>src\app\update\update.component.scss  
+ echo   border-radius: 8px;  1>>src\app\update\update.component.scss  
+ echo   font-size: 16px;  1>>src\app\update\update.component.scss  
+ echo   background: linear-gradient(135deg, #ffffff, #f0f4f8);  1>>src\app\update\update.component.scss  
+ echo   color: #333;  1>>src\app\update\update.component.scss  
+ echo   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);  1>>src\app\update\update.component.scss  
+ echo   transition: box-shadow 0.3s ease, transform 0.3s ease;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form input:focus {  1>>src\app\update\update.component.scss  
+ echo   outline: none;  1>>src\app\update\update.component.scss  
+ echo   box-shadow: 0 0 8px rgba(0, 140, 140, 0.5);  1>>src\app\update\update.component.scss  
+ echo   transform: translateY(-2px);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form input:hover {  1>>src\app\update\update.component.scss  
+ echo   box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form button {  1>>src\app\update\update.component.scss  
+ echo   background: linear-gradient(45deg, #012344, #012344);  1>>src\app\update\update.component.scss  
+ echo   color: #fff;  1>>src\app\update\update.component.scss  
+ echo   width: 80%;  1>>src\app\update\update.component.scss  
+ echo   border: none;  1>>src\app\update\update.component.scss  
+ echo   border-radius: 8px;  1>>src\app\update\update.component.scss  
+ echo   font-size: 14px;  1>>src\app\update\update.component.scss  
+ echo   font-weight: bold;  1>>src\app\update\update.component.scss  
+ echo   margin: 20px auto 0;  1>>src\app\update\update.component.scss  
+ echo   display: block;  1>>src\app\update\update.component.scss  
+ echo   text-transform: uppercase;  1>>src\app\update\update.component.scss  
+ echo   cursor: pointer;  1>>src\app\update\update.component.scss  
+ echo   box-shadow: 0 6px 12px rgba(0, 140, 140, 0.2);  1>>src\app\update\update.component.scss  
+ echo   transition: transform 0.3s ease, box-shadow 0.3s ease;  1>>src\app\update\update.component.scss  
+ echo   padding: 10px;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form button:hover {  1>>src\app\update\update.component.scss  
+ echo   transform: translateY(-4px);  1>>src\app\update\update.component.scss  
+ echo   box-shadow: 0 8px 16px rgba(0, 140, 140, 0.3);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form button:active {  1>>src\app\update\update.component.scss  
+ echo   transform: translateY(2px);  1>>src\app\update\update.component.scss  
+ echo   box-shadow: 0 4px 8px rgba(0, 140, 140, 0.2);  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo form div {  1>>src\app\update\update.component.scss  
+ echo   margin-bottom: 20px;  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo @media (max-width: 600px) {  1>>src\app\update\update.component.scss  
+ echo   form {  1>>src\app\update\update.component.scss  
+ echo     padding: 30px;  1>>src\app\update\update.component.scss  
+ echo     margin: 20px;  1>>src\app\update\update.component.scss  
+ echo   }  1>>src\app\update\update.component.scss  
+ echo   form h2 {  1>>src\app\update\update.component.scss  
+ echo     font-size: 28px;  1>>src\app\update\update.component.scss  
+ echo   }  1>>src\app\update\update.component.scss  
+ echo   form button {  1>>src\app\update\update.component.scss  
+ echo     font-size: 16px;  1>>src\app\update\update.component.scss  
+ echo   }  1>>src\app\update\update.component.scss  
+ echo }  1>>src\app\update\update.component.scss  
+ echo ===== Creating shared service for components =====  
+ ng g s services/shared  
+ echo import { Injectable } from '@angular/core';  1>src\app\services\shared.service.ts  
+ echo import { HttpClient } from '@angular/common/http';  1>>src\app\services\shared.service.ts  
+ echo import { Observable } from 'rxjs';  1>>src\app\services\shared.service.ts  
+ echo @Injectable({  1>>src\app\services\shared.service.ts  
+ echo    providedIn: 'root'  1>>src\app\services\shared.service.ts  
+ echo }   1>>src\app\services\shared.service.ts  
+ echo )  1>>src\app\services\shared.service.ts  
+ echo export class SharedService {  1>>src\app\services\shared.service.ts  
+ echo   private apiUrl = 'http://localhost:3000/api';  1>>src\app\services\shared.service.ts  
+ echo   constructor(private http: HttpClient) { }  1>>src\app\services\shared.service.ts  
+ echo   getUsers() {  1>>src\app\services\shared.service.ts  
+ echo    return this.http.get(`${this.apiUrl}/getall`); //HERE  1>>src\app\services\shared.service.ts  
+ echo   }  1>>src\app\services\shared.service.ts  
+ echo  getTableData(table: string): Observable<any[]> { // Doit retourner un Observable  1>>src\app\services\shared.service.ts  
+ echo   return this.http.get<any[]>(`${this.apiUrl}/getall/${table}`);  1>>src\app\services\shared.service.ts  
+ echo }  1>>src\app\services\shared.service.ts  
+ echo getItemById(table: string, id: string) {  1>>src\app\services\shared.service.ts  
+ echo   return this.http.get(`${this.apiUrl}/${table}/${id}`);  1>>src\app\services\shared.service.ts  
+ echo  }  1>>src\app\services\shared.service.ts  
+ echo  updateItemById(table: string, id: string, data: any) {  1>>src\app\services\shared.service.ts  
+ echo   return this.http.put(`${this.apiUrl}/update/${table}/${id}`, data);  1>>src\app\services\shared.service.ts  
+ echo }  1>>src\app\services\shared.service.ts  
+ echo deleteItem(table: string, id: string) {  1>>src\app\services\shared.service.ts  
+ echo   return this.http.delete(`http://localhost:3000/api/delete/${table}/${id}`); //HERE  1>>src\app\services\shared.service.ts  
+ echo }  1>>src\app\services\shared.service.ts  
+ echo deleteTable(table: string): Observable<any> {  1>>src\app\services\shared.service.ts  
+ echo   return this.http.delete(`${this.apiUrl}/delete/${table}`);  1>>src\app\services\shared.service.ts  
+ echo }  1>>src\app\services\shared.service.ts  
+ echo }  1>>src\app\services\shared.service.ts  
+ if errorlevel 1 (
+echo Failed to generate the shared service!  
+ exit /b 
+)  
+ echo <!doctype html>  1>src\index.html  
+ echo <html lang="en">  1>>src\index.html  
+ echo   <head>  1>>src\index.html  
+ echo     <meta charset="utf-8">  1>>src\index.html  
+ echo     <title>AngularProject</title>  1>>src\index.html  
+ echo     <base href="/">  1>>src\index.html  
+ echo     <meta name="viewport" content="width=device-width, initial-scale=1">  1>>src\index.html  
+ echo     <link rel="icon" type="image/x-icon" href="favicon.ico">  1>>src\index.html  
+ echo <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">   1>>src\index.html  
+ echo   </head>  1>>src\index.html  
+ echo   <body>  1>>src\index.html  
+ echo     <app-root></app-root>  1>>src\index.html  
+ echo     <app-admin></app-admin>  1>>src\index.html  
+ echo      <app-sidebar></app-sidebar>  1>>src\index.html  
+ for %i in (clients deliveries employees orders payments tickets transactions invoices products) do (echo     <app-%i></app-%i>  1>>src\index.html )  
+ echo   </body>  1>>src\index.html  
+ echo </html>  1>>src\index.html  
+ if errorlevel 1 (
+echo Erreur lors de l'écriture de index.html!  
+ exit /b  
+)  
+ echo ===== Installing dependencies... This may take some time... =====  
+ cd C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\  
+ dir 
+ echo scriptDir .. C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\  
+ echo cd .. C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular  
+ move angular-project "C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\generated\1749137439652-g5myxqqv"  
+ if errorlevel 1 (
+echo Failed to install dependencies!  
+ exit /b 
+)  
+ pause
+)  else (
+echo Angular project already exists! in   
+ cd "C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project" 
+) 
+Creating Angular project...
+[32mCREATE[39m angular-project/angular.json (2902 bytes)
+[32mCREATE[39m angular-project/package.json (1084 bytes)
+[32mCREATE[39m angular-project/README.md (1536 bytes)
+[32mCREATE[39m angular-project/tsconfig.json (942 bytes)
+[32mCREATE[39m angular-project/.editorconfig (331 bytes)
+[32mCREATE[39m angular-project/.gitignore (629 bytes)
+[32mCREATE[39m angular-project/tsconfig.app.json (439 bytes)
+[32mCREATE[39m angular-project/tsconfig.spec.json (449 bytes)
+[32mCREATE[39m angular-project/.vscode/extensions.json (134 bytes)
+[32mCREATE[39m angular-project/.vscode/launch.json (490 bytes)
+[32mCREATE[39m angular-project/.vscode/tasks.json (980 bytes)
+[32mCREATE[39m angular-project/src/main.ts (256 bytes)
+[32mCREATE[39m angular-project/src/index.html (313 bytes)
+[32mCREATE[39m angular-project/src/styles.scss (81 bytes)
+[32mCREATE[39m angular-project/src/app/app.component.html (20239 bytes)
+[32mCREATE[39m angular-project/src/app/app.component.spec.ts (972 bytes)
+[32mCREATE[39m angular-project/src/app/app.component.ts (304 bytes)
+[32mCREATE[39m angular-project/src/app/app.component.scss (0 bytes)
+[32mCREATE[39m angular-project/src/app/app.config.ts (318 bytes)
+[32mCREATE[39m angular-project/src/app/app.routes.ts (80 bytes)
+[32mCREATE[39m angular-project/public/favicon.ico (15086 bytes)
+    Directory is already under version control. Skipping initialization of git.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { clientsComponent } from './clients/clients.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { deliveriesComponent } from './deliveries/deliveries.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { employeesComponent } from './employees/employees.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { ordersComponent } from './orders/orders.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { paymentsComponent } from './payments/payments.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { ticketsComponent } from './tickets/tickets.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { transactionsComponent } from './transactions/transactions.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { invoicesComponent } from './invoices/invoices.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { productsComponent } from './products/products.component';  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'clients', component: clientsComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'deliveries', component: deliveriesComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'employees', component: employeesComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'orders', component: ordersComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'payments', component: paymentsComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'tickets', component: ticketsComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'transactions', component: transactionsComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'invoices', component: invoicesComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   { path: 'products', component: productsComponent },  1>>src\app\app.routes.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/clients"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/deliveries"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/employees"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/orders"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/payments"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/tickets"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/transactions"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/invoices"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo   <a routerLink="/products"></a>  1>>src\app\app.component.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { clientsComponent } from './clients/clients.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { deliveriesComponent } from './deliveries/deliveries.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { employeesComponent } from './employees/employees.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { ordersComponent } from './orders/orders.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { paymentsComponent } from './payments/payments.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { ticketsComponent } from './tickets/tickets.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { transactionsComponent } from './transactions/transactions.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { invoicesComponent } from './invoices/invoices.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo import { productsComponent } from './products/products.component';  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     clientsComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     deliveriesComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     employeesComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     ordersComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     paymentsComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     ticketsComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     transactionsComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     invoicesComponent,  1>>src\app\app.component.ts ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     productsComponent,  1>>src\app\app.component.ts ) 
+Angular project "angular-project" created successfully.
+===== Generating components based on the list =====
+[32mCREATE[39m src/app/sidebar/sidebar.component.html (23 bytes)
+[32mCREATE[39m src/app/sidebar/sidebar.component.spec.ts (622 bytes)
+[32mCREATE[39m src/app/sidebar/sidebar.component.ts (230 bytes)
+[32mCREATE[39m src/app/sidebar/sidebar.component.scss (0 bytes)
+[32mCREATE[39m src/app/admin/admin.component.html (21 bytes)
+[32mCREATE[39m src/app/admin/admin.component.spec.ts (608 bytes)
+[32mCREATE[39m src/app/admin/admin.component.ts (222 bytes)
+[32mCREATE[39m src/app/admin/admin.component.scss (0 bytes)
+[32mCREATE[39m src/app/update/update.component.html (22 bytes)
+[32mCREATE[39m src/app/update/update.component.spec.ts (615 bytes)
+[32mCREATE[39m src/app/update/update.component.ts (226 bytes)
+[32mCREATE[39m src/app/update/update.component.scss (0 bytes)
+</div>
+ clients,deliveries,employees,orders,payments,tickets,transactions,invoices,products
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component clients  
+ ng g c clients --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\clients\clients.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\clients\clients.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\clients\clients.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\clients\clients.component.ts  
+ echo @Component({  1>>src\app\clients\clients.component.ts  
+ echo   selector: 'app-clients',  1>>src\app\clients\clients.component.ts  
+ echo   standalone: true,  1>>src\app\clients\clients.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\clients\clients.component.ts  
+ echo   templateUrl: './clients.component.html',  1>>src\app\clients\clients.component.ts  
+ echo   styleUrls: ['./clients.component.scss']  1>>src\app\clients\clients.component.ts  
+ echo }  1>>src\app\clients\clients.component.ts  
+ echo )   1>>src\app\clients\clients.component.ts  
+ echo export class clientsComponent implements OnInit {   1>>src\app\clients\clients.component.ts  
+ echo   tables: string[] = [];  1>>src\app\clients\clients.component.ts  
+ echo   dataMap: any = {};  1>>src\app\clients\clients.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\clients\clients.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\clients\clients.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\clients\clients.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\clients\clients.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\clients\clients.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\clients\clients.component.ts  
+ echo         this.dataMap = data;  1>>src\app\clients\clients.component.ts  
+ echo         } else {  1>>src\app\clients\clients.component.ts  
+ echo           this.tables = [];   1>>src\app\clients\clients.component.ts  
+ echo           this.dataMap = {};    1>>src\app\clients\clients.component.ts  
+ echo         }   1>>src\app\clients\clients.component.ts  
+ echo       }   1>>src\app\clients\clients.component.ts  
+ echo       );   1>>src\app\clients\clients.component.ts  
+ echo     }   1>>src\app\clients\clients.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\clients\clients.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\clients\clients.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\clients\clients.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\clients\clients.component.ts  
+ echo     }  1>>src\app\clients\clients.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\clients\clients.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\clients\clients.component.ts  
+ echo       return Object.values(row);   1>>src\app\clients\clients.component.ts  
+ echo   }   1>>src\app\clients\clients.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\clients\clients.component.ts  
+ echo     viewclients(clients: any): void {  1>>src\app\clients\clients.component.ts  
+ echo     console.log('View clients:', clients);  1>>src\app\clients\clients.component.ts  
+ echo     alert(`Viewing clients: ${JSON.stringify(clients, null, 2)}`);  1>>src\app\clients\clients.component.ts  
+ echo }  1>>src\app\clients\clients.component.ts  
+ echo     updateclients(clients: any): void {  1>>src\app\clients\clients.component.ts  
+ echo     this.router.navigate(['/update', 'clients', clients._id]);  1>>src\app\clients\clients.component.ts  
+ echo   }  1>>src\app\clients\clients.component.ts  
+ echo     deleteclients(clientsId: string): void {  1>>src\app\clients\clients.component.ts  
+ echo     console.log('Delete clients ID:', clientsId);  1>>src\app\clients\clients.component.ts  
+ echo     this.service.deleteItem('clients',clientsId).subscribe(   1>>src\app\clients\clients.component.ts  
+ echo        response => {  1>>src\app\clients\clients.component.ts  
+ echo            console.log('clients deleted successfully', response);  1>>src\app\clients\clients.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\clients\clients.component.ts  
+ echo            this.dataMap['clients'] = this.dataMap['clients'].filter((clients: any) => clients._id !== clientsId);  1>>src\app\clients\clients.component.ts  
+ echo            alert('clients Deleted!');  1>>src\app\clients\clients.component.ts  
+ echo        },  1>>src\app\clients\clients.component.ts  
+ echo        error => {  1>>src\app\clients\clients.component.ts  
+ echo            console.error('Error deleting clients:', error);  1>>src\app\clients\clients.component.ts  
+ echo            alert('Failed to delete clients!');  1>>src\app\clients\clients.component.ts  
+ echo        }   1>>src\app\clients\clients.component.ts  
+ echo     );  1>>src\app\clients\clients.component.ts  
+ echo }  1>>src\app\clients\clients.component.ts  
+ echo }  1>>src\app\clients\clients.component.ts  
+ echo <p>clients Table:</p>    1>src\app\clients\clients.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\clients\clients.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\clients\clients.component.html  
+ echo <table border="1" *ngIf="table === 'clients'">  1>>src\app\clients\clients.component.html  
+ echo <thead >  1>>src\app\clients\clients.component.html  
+ echo <tr>  1>>src\app\clients\clients.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\clients\clients.component.html  
+ echo <th>Actions</th>  1>>src\app\clients\clients.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\clients\clients.component.html  
+ echo <tbody>  1>>src\app\clients\clients.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\clients\clients.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\clients\clients.component.html  
+ echo <td>   1>>src\app\clients\clients.component.html  
+ echo    <button (click)="viewclients(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\clients\clients.component.html  
+ echo    <button (click)="updateclients(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\clients\clients.component.html  
+ echo    <button (click)="deleteclients(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\clients\clients.component.html  
+ echo </td>   1>>src\app\clients\clients.component.html  
+ echo </tr>  1>>src\app\clients\clients.component.html  
+ echo </tbody>  1>>src\app\clients\clients.component.html  
+ echo </table>  1>>src\app\clients\clients.component.html  
+ echo </div>  1>>src\app\clients\clients.component.html  
+ echo </div>  1>>src\app\clients\clients.component.html  
+ echo table {  1>>src\app\clients\clients.component.scss  
+ echo   width: 100%;  1>>src\app\clients\clients.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\clients\clients.component.scss  
+ echo   min-width: 500px;  1>>src\app\clients\clients.component.scss  
+ echo   table-layout: auto;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo th, td {  1>>src\app\clients\clients.component.scss  
+ echo   padding: 8px;  1>>src\app\clients\clients.component.scss  
+ echo   text-align: center;  1>>src\app\clients\clients.component.scss  
+ echo   font-size: 12px;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo thead {  1>>src\app\clients\clients.component.scss  
+ echo   background: #014e85;  1>>src\app\clients\clients.component.scss  
+ echo   color: #fff;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\clients\clients.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\clients\clients.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo tbody tr:hover {  1>>src\app\clients\clients.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo .btn {  1>>src\app\clients\clients.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\clients\clients.component.scss  
+ echo   font-size: 14px;  1>>src\app\clients\clients.component.scss  
+ echo   background: #d6eaff;  1>>src\app\clients\clients.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\clients\clients.component.scss  
+ echo   border-radius: 5px;  1>>src\app\clients\clients.component.scss  
+ echo   cursor: pointer;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo .btn:hover {  1>>src\app\clients\clients.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\clients\clients.component.scss  
+ echo   table {  1>>src\app\clients\clients.component.scss  
+ echo     min-width: 500px;  1>>src\app\clients\clients.component.scss  
+ echo   }  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\clients\clients.component.scss  
+ echo   table {  1>>src\app\clients\clients.component.scss  
+ echo     min-width: 400px;  1>>src\app\clients\clients.component.scss  
+ echo   }  1>>src\app\clients\clients.component.scss  
+ echo }  1>>src\app\clients\clients.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component clients  
+ exit /b 
+) 
+) 
+Generating component clients
+[32mCREATE[39m src/app/clients/clients.component.html (23 bytes)
+[32mCREATE[39m src/app/clients/clients.component.spec.ts (622 bytes)
+[32mCREATE[39m src/app/clients/clients.component.ts (230 bytes)
+[32mCREATE[39m src/app/clients/clients.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component deliveries  
+ ng g c deliveries --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\deliveries\deliveries.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\deliveries\deliveries.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\deliveries\deliveries.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\deliveries\deliveries.component.ts  
+ echo @Component({  1>>src\app\deliveries\deliveries.component.ts  
+ echo   selector: 'app-deliveries',  1>>src\app\deliveries\deliveries.component.ts  
+ echo   standalone: true,  1>>src\app\deliveries\deliveries.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\deliveries\deliveries.component.ts  
+ echo   templateUrl: './deliveries.component.html',  1>>src\app\deliveries\deliveries.component.ts  
+ echo   styleUrls: ['./deliveries.component.scss']  1>>src\app\deliveries\deliveries.component.ts  
+ echo }  1>>src\app\deliveries\deliveries.component.ts  
+ echo )   1>>src\app\deliveries\deliveries.component.ts  
+ echo export class deliveriesComponent implements OnInit {   1>>src\app\deliveries\deliveries.component.ts  
+ echo   tables: string[] = [];  1>>src\app\deliveries\deliveries.component.ts  
+ echo   dataMap: any = {};  1>>src\app\deliveries\deliveries.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\deliveries\deliveries.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\deliveries\deliveries.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\deliveries\deliveries.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\deliveries\deliveries.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\deliveries\deliveries.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\deliveries\deliveries.component.ts  
+ echo         this.dataMap = data;  1>>src\app\deliveries\deliveries.component.ts  
+ echo         } else {  1>>src\app\deliveries\deliveries.component.ts  
+ echo           this.tables = [];   1>>src\app\deliveries\deliveries.component.ts  
+ echo           this.dataMap = {};    1>>src\app\deliveries\deliveries.component.ts  
+ echo         }   1>>src\app\deliveries\deliveries.component.ts  
+ echo       }   1>>src\app\deliveries\deliveries.component.ts  
+ echo       );   1>>src\app\deliveries\deliveries.component.ts  
+ echo     }   1>>src\app\deliveries\deliveries.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\deliveries\deliveries.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\deliveries\deliveries.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\deliveries\deliveries.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\deliveries\deliveries.component.ts  
+ echo     }  1>>src\app\deliveries\deliveries.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\deliveries\deliveries.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\deliveries\deliveries.component.ts  
+ echo       return Object.values(row);   1>>src\app\deliveries\deliveries.component.ts  
+ echo   }   1>>src\app\deliveries\deliveries.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\deliveries\deliveries.component.ts  
+ echo     viewdeliveries(deliveries: any): void {  1>>src\app\deliveries\deliveries.component.ts  
+ echo     console.log('View deliveries:', deliveries);  1>>src\app\deliveries\deliveries.component.ts  
+ echo     alert(`Viewing deliveries: ${JSON.stringify(deliveries, null, 2)}`);  1>>src\app\deliveries\deliveries.component.ts  
+ echo }  1>>src\app\deliveries\deliveries.component.ts  
+ echo     updatedeliveries(deliveries: any): void {  1>>src\app\deliveries\deliveries.component.ts  
+ echo     this.router.navigate(['/update', 'deliveries', deliveries._id]);  1>>src\app\deliveries\deliveries.component.ts  
+ echo   }  1>>src\app\deliveries\deliveries.component.ts  
+ echo     deletedeliveries(deliveriesId: string): void {  1>>src\app\deliveries\deliveries.component.ts  
+ echo     console.log('Delete deliveries ID:', deliveriesId);  1>>src\app\deliveries\deliveries.component.ts  
+ echo     this.service.deleteItem('deliveries',deliveriesId).subscribe(   1>>src\app\deliveries\deliveries.component.ts  
+ echo        response => {  1>>src\app\deliveries\deliveries.component.ts  
+ echo            console.log('deliveries deleted successfully', response);  1>>src\app\deliveries\deliveries.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\deliveries\deliveries.component.ts  
+ echo            this.dataMap['deliveries'] = this.dataMap['deliveries'].filter((deliveries: any) => deliveries._id !== deliveriesId);  1>>src\app\deliveries\deliveries.component.ts  
+ echo            alert('deliveries Deleted!');  1>>src\app\deliveries\deliveries.component.ts  
+ echo        },  1>>src\app\deliveries\deliveries.component.ts  
+ echo        error => {  1>>src\app\deliveries\deliveries.component.ts  
+ echo            console.error('Error deleting deliveries:', error);  1>>src\app\deliveries\deliveries.component.ts  
+ echo            alert('Failed to delete deliveries!');  1>>src\app\deliveries\deliveries.component.ts  
+ echo        }   1>>src\app\deliveries\deliveries.component.ts  
+ echo     );  1>>src\app\deliveries\deliveries.component.ts  
+ echo }  1>>src\app\deliveries\deliveries.component.ts  
+ echo }  1>>src\app\deliveries\deliveries.component.ts  
+ echo <p>deliveries Table:</p>    1>src\app\deliveries\deliveries.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\deliveries\deliveries.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\deliveries\deliveries.component.html  
+ echo <table border="1" *ngIf="table === 'deliveries'">  1>>src\app\deliveries\deliveries.component.html  
+ echo <thead >  1>>src\app\deliveries\deliveries.component.html  
+ echo <tr>  1>>src\app\deliveries\deliveries.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\deliveries\deliveries.component.html  
+ echo <th>Actions</th>  1>>src\app\deliveries\deliveries.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\deliveries\deliveries.component.html  
+ echo <tbody>  1>>src\app\deliveries\deliveries.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\deliveries\deliveries.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\deliveries\deliveries.component.html  
+ echo <td>   1>>src\app\deliveries\deliveries.component.html  
+ echo    <button (click)="viewdeliveries(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\deliveries\deliveries.component.html  
+ echo    <button (click)="updatedeliveries(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\deliveries\deliveries.component.html  
+ echo    <button (click)="deletedeliveries(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\deliveries\deliveries.component.html  
+ echo </td>   1>>src\app\deliveries\deliveries.component.html  
+ echo </tr>  1>>src\app\deliveries\deliveries.component.html  
+ echo </tbody>  1>>src\app\deliveries\deliveries.component.html  
+ echo </table>  1>>src\app\deliveries\deliveries.component.html  
+ echo </div>  1>>src\app\deliveries\deliveries.component.html  
+ echo </div>  1>>src\app\deliveries\deliveries.component.html  
+ echo table {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   width: 100%;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   min-width: 500px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   table-layout: auto;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo th, td {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   padding: 8px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   text-align: center;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   font-size: 12px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo thead {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #014e85;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   color: #fff;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo tbody tr:hover {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo .btn {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   font-size: 14px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #d6eaff;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   border-radius: 5px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   cursor: pointer;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo .btn:hover {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   table {  1>>src\app\deliveries\deliveries.component.scss  
+ echo     min-width: 500px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   }  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\deliveries\deliveries.component.scss  
+ echo   table {  1>>src\app\deliveries\deliveries.component.scss  
+ echo     min-width: 400px;  1>>src\app\deliveries\deliveries.component.scss  
+ echo   }  1>>src\app\deliveries\deliveries.component.scss  
+ echo }  1>>src\app\deliveries\deliveries.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component deliveries  
+ exit /b 
+) 
+) 
+Generating component deliveries
+[32mCREATE[39m src/app/deliveries/deliveries.component.html (26 bytes)
+[32mCREATE[39m src/app/deliveries/deliveries.component.spec.ts (643 bytes)
+[32mCREATE[39m src/app/deliveries/deliveries.component.ts (242 bytes)
+[32mCREATE[39m src/app/deliveries/deliveries.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component employees  
+ ng g c employees --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\employees\employees.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\employees\employees.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\employees\employees.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\employees\employees.component.ts  
+ echo @Component({  1>>src\app\employees\employees.component.ts  
+ echo   selector: 'app-employees',  1>>src\app\employees\employees.component.ts  
+ echo   standalone: true,  1>>src\app\employees\employees.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\employees\employees.component.ts  
+ echo   templateUrl: './employees.component.html',  1>>src\app\employees\employees.component.ts  
+ echo   styleUrls: ['./employees.component.scss']  1>>src\app\employees\employees.component.ts  
+ echo }  1>>src\app\employees\employees.component.ts  
+ echo )   1>>src\app\employees\employees.component.ts  
+ echo export class employeesComponent implements OnInit {   1>>src\app\employees\employees.component.ts  
+ echo   tables: string[] = [];  1>>src\app\employees\employees.component.ts  
+ echo   dataMap: any = {};  1>>src\app\employees\employees.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\employees\employees.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\employees\employees.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\employees\employees.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\employees\employees.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\employees\employees.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\employees\employees.component.ts  
+ echo         this.dataMap = data;  1>>src\app\employees\employees.component.ts  
+ echo         } else {  1>>src\app\employees\employees.component.ts  
+ echo           this.tables = [];   1>>src\app\employees\employees.component.ts  
+ echo           this.dataMap = {};    1>>src\app\employees\employees.component.ts  
+ echo         }   1>>src\app\employees\employees.component.ts  
+ echo       }   1>>src\app\employees\employees.component.ts  
+ echo       );   1>>src\app\employees\employees.component.ts  
+ echo     }   1>>src\app\employees\employees.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\employees\employees.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\employees\employees.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\employees\employees.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\employees\employees.component.ts  
+ echo     }  1>>src\app\employees\employees.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\employees\employees.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\employees\employees.component.ts  
+ echo       return Object.values(row);   1>>src\app\employees\employees.component.ts  
+ echo   }   1>>src\app\employees\employees.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\employees\employees.component.ts  
+ echo     viewemployees(employees: any): void {  1>>src\app\employees\employees.component.ts  
+ echo     console.log('View employees:', employees);  1>>src\app\employees\employees.component.ts  
+ echo     alert(`Viewing employees: ${JSON.stringify(employees, null, 2)}`);  1>>src\app\employees\employees.component.ts  
+ echo }  1>>src\app\employees\employees.component.ts  
+ echo     updateemployees(employees: any): void {  1>>src\app\employees\employees.component.ts  
+ echo     this.router.navigate(['/update', 'employees', employees._id]);  1>>src\app\employees\employees.component.ts  
+ echo   }  1>>src\app\employees\employees.component.ts  
+ echo     deleteemployees(employeesId: string): void {  1>>src\app\employees\employees.component.ts  
+ echo     console.log('Delete employees ID:', employeesId);  1>>src\app\employees\employees.component.ts  
+ echo     this.service.deleteItem('employees',employeesId).subscribe(   1>>src\app\employees\employees.component.ts  
+ echo        response => {  1>>src\app\employees\employees.component.ts  
+ echo            console.log('employees deleted successfully', response);  1>>src\app\employees\employees.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\employees\employees.component.ts  
+ echo            this.dataMap['employees'] = this.dataMap['employees'].filter((employees: any) => employees._id !== employeesId);  1>>src\app\employees\employees.component.ts  
+ echo            alert('employees Deleted!');  1>>src\app\employees\employees.component.ts  
+ echo        },  1>>src\app\employees\employees.component.ts  
+ echo        error => {  1>>src\app\employees\employees.component.ts  
+ echo            console.error('Error deleting employees:', error);  1>>src\app\employees\employees.component.ts  
+ echo            alert('Failed to delete employees!');  1>>src\app\employees\employees.component.ts  
+ echo        }   1>>src\app\employees\employees.component.ts  
+ echo     );  1>>src\app\employees\employees.component.ts  
+ echo }  1>>src\app\employees\employees.component.ts  
+ echo }  1>>src\app\employees\employees.component.ts  
+ echo <p>employees Table:</p>    1>src\app\employees\employees.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\employees\employees.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\employees\employees.component.html  
+ echo <table border="1" *ngIf="table === 'employees'">  1>>src\app\employees\employees.component.html  
+ echo <thead >  1>>src\app\employees\employees.component.html  
+ echo <tr>  1>>src\app\employees\employees.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\employees\employees.component.html  
+ echo <th>Actions</th>  1>>src\app\employees\employees.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\employees\employees.component.html  
+ echo <tbody>  1>>src\app\employees\employees.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\employees\employees.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\employees\employees.component.html  
+ echo <td>   1>>src\app\employees\employees.component.html  
+ echo    <button (click)="viewemployees(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\employees\employees.component.html  
+ echo    <button (click)="updateemployees(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\employees\employees.component.html  
+ echo    <button (click)="deleteemployees(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\employees\employees.component.html  
+ echo </td>   1>>src\app\employees\employees.component.html  
+ echo </tr>  1>>src\app\employees\employees.component.html  
+ echo </tbody>  1>>src\app\employees\employees.component.html  
+ echo </table>  1>>src\app\employees\employees.component.html  
+ echo </div>  1>>src\app\employees\employees.component.html  
+ echo </div>  1>>src\app\employees\employees.component.html  
+ echo table {  1>>src\app\employees\employees.component.scss  
+ echo   width: 100%;  1>>src\app\employees\employees.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\employees\employees.component.scss  
+ echo   min-width: 500px;  1>>src\app\employees\employees.component.scss  
+ echo   table-layout: auto;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo th, td {  1>>src\app\employees\employees.component.scss  
+ echo   padding: 8px;  1>>src\app\employees\employees.component.scss  
+ echo   text-align: center;  1>>src\app\employees\employees.component.scss  
+ echo   font-size: 12px;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo thead {  1>>src\app\employees\employees.component.scss  
+ echo   background: #014e85;  1>>src\app\employees\employees.component.scss  
+ echo   color: #fff;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\employees\employees.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\employees\employees.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo tbody tr:hover {  1>>src\app\employees\employees.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo .btn {  1>>src\app\employees\employees.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\employees\employees.component.scss  
+ echo   font-size: 14px;  1>>src\app\employees\employees.component.scss  
+ echo   background: #d6eaff;  1>>src\app\employees\employees.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\employees\employees.component.scss  
+ echo   border-radius: 5px;  1>>src\app\employees\employees.component.scss  
+ echo   cursor: pointer;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo .btn:hover {  1>>src\app\employees\employees.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\employees\employees.component.scss  
+ echo   table {  1>>src\app\employees\employees.component.scss  
+ echo     min-width: 500px;  1>>src\app\employees\employees.component.scss  
+ echo   }  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\employees\employees.component.scss  
+ echo   table {  1>>src\app\employees\employees.component.scss  
+ echo     min-width: 400px;  1>>src\app\employees\employees.component.scss  
+ echo   }  1>>src\app\employees\employees.component.scss  
+ echo }  1>>src\app\employees\employees.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component employees  
+ exit /b 
+) 
+) 
+Generating component employees
+[32mCREATE[39m src/app/employees/employees.component.html (25 bytes)
+[32mCREATE[39m src/app/employees/employees.component.spec.ts (636 bytes)
+[32mCREATE[39m src/app/employees/employees.component.ts (238 bytes)
+[32mCREATE[39m src/app/employees/employees.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component orders  
+ ng g c orders --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\orders\orders.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\orders\orders.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\orders\orders.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\orders\orders.component.ts  
+ echo @Component({  1>>src\app\orders\orders.component.ts  
+ echo   selector: 'app-orders',  1>>src\app\orders\orders.component.ts  
+ echo   standalone: true,  1>>src\app\orders\orders.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\orders\orders.component.ts  
+ echo   templateUrl: './orders.component.html',  1>>src\app\orders\orders.component.ts  
+ echo   styleUrls: ['./orders.component.scss']  1>>src\app\orders\orders.component.ts  
+ echo }  1>>src\app\orders\orders.component.ts  
+ echo )   1>>src\app\orders\orders.component.ts  
+ echo export class ordersComponent implements OnInit {   1>>src\app\orders\orders.component.ts  
+ echo   tables: string[] = [];  1>>src\app\orders\orders.component.ts  
+ echo   dataMap: any = {};  1>>src\app\orders\orders.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\orders\orders.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\orders\orders.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\orders\orders.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\orders\orders.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\orders\orders.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\orders\orders.component.ts  
+ echo         this.dataMap = data;  1>>src\app\orders\orders.component.ts  
+ echo         } else {  1>>src\app\orders\orders.component.ts  
+ echo           this.tables = [];   1>>src\app\orders\orders.component.ts  
+ echo           this.dataMap = {};    1>>src\app\orders\orders.component.ts  
+ echo         }   1>>src\app\orders\orders.component.ts  
+ echo       }   1>>src\app\orders\orders.component.ts  
+ echo       );   1>>src\app\orders\orders.component.ts  
+ echo     }   1>>src\app\orders\orders.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\orders\orders.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\orders\orders.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\orders\orders.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\orders\orders.component.ts  
+ echo     }  1>>src\app\orders\orders.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\orders\orders.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\orders\orders.component.ts  
+ echo       return Object.values(row);   1>>src\app\orders\orders.component.ts  
+ echo   }   1>>src\app\orders\orders.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\orders\orders.component.ts  
+ echo     vieworders(orders: any): void {  1>>src\app\orders\orders.component.ts  
+ echo     console.log('View orders:', orders);  1>>src\app\orders\orders.component.ts  
+ echo     alert(`Viewing orders: ${JSON.stringify(orders, null, 2)}`);  1>>src\app\orders\orders.component.ts  
+ echo }  1>>src\app\orders\orders.component.ts  
+ echo     updateorders(orders: any): void {  1>>src\app\orders\orders.component.ts  
+ echo     this.router.navigate(['/update', 'orders', orders._id]);  1>>src\app\orders\orders.component.ts  
+ echo   }  1>>src\app\orders\orders.component.ts  
+ echo     deleteorders(ordersId: string): void {  1>>src\app\orders\orders.component.ts  
+ echo     console.log('Delete orders ID:', ordersId);  1>>src\app\orders\orders.component.ts  
+ echo     this.service.deleteItem('orders',ordersId).subscribe(   1>>src\app\orders\orders.component.ts  
+ echo        response => {  1>>src\app\orders\orders.component.ts  
+ echo            console.log('orders deleted successfully', response);  1>>src\app\orders\orders.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\orders\orders.component.ts  
+ echo            this.dataMap['orders'] = this.dataMap['orders'].filter((orders: any) => orders._id !== ordersId);  1>>src\app\orders\orders.component.ts  
+ echo            alert('orders Deleted!');  1>>src\app\orders\orders.component.ts  
+ echo        },  1>>src\app\orders\orders.component.ts  
+ echo        error => {  1>>src\app\orders\orders.component.ts  
+ echo            console.error('Error deleting orders:', error);  1>>src\app\orders\orders.component.ts  
+ echo            alert('Failed to delete orders!');  1>>src\app\orders\orders.component.ts  
+ echo        }   1>>src\app\orders\orders.component.ts  
+ echo     );  1>>src\app\orders\orders.component.ts  
+ echo }  1>>src\app\orders\orders.component.ts  
+ echo }  1>>src\app\orders\orders.component.ts  
+ echo <p>orders Table:</p>    1>src\app\orders\orders.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\orders\orders.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\orders\orders.component.html  
+ echo <table border="1" *ngIf="table === 'orders'">  1>>src\app\orders\orders.component.html  
+ echo <thead >  1>>src\app\orders\orders.component.html  
+ echo <tr>  1>>src\app\orders\orders.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\orders\orders.component.html  
+ echo <th>Actions</th>  1>>src\app\orders\orders.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\orders\orders.component.html  
+ echo <tbody>  1>>src\app\orders\orders.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\orders\orders.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\orders\orders.component.html  
+ echo <td>   1>>src\app\orders\orders.component.html  
+ echo    <button (click)="vieworders(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\orders\orders.component.html  
+ echo    <button (click)="updateorders(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\orders\orders.component.html  
+ echo    <button (click)="deleteorders(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\orders\orders.component.html  
+ echo </td>   1>>src\app\orders\orders.component.html  
+ echo </tr>  1>>src\app\orders\orders.component.html  
+ echo </tbody>  1>>src\app\orders\orders.component.html  
+ echo </table>  1>>src\app\orders\orders.component.html  
+ echo </div>  1>>src\app\orders\orders.component.html  
+ echo </div>  1>>src\app\orders\orders.component.html  
+ echo table {  1>>src\app\orders\orders.component.scss  
+ echo   width: 100%;  1>>src\app\orders\orders.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\orders\orders.component.scss  
+ echo   min-width: 500px;  1>>src\app\orders\orders.component.scss  
+ echo   table-layout: auto;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo th, td {  1>>src\app\orders\orders.component.scss  
+ echo   padding: 8px;  1>>src\app\orders\orders.component.scss  
+ echo   text-align: center;  1>>src\app\orders\orders.component.scss  
+ echo   font-size: 12px;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo thead {  1>>src\app\orders\orders.component.scss  
+ echo   background: #014e85;  1>>src\app\orders\orders.component.scss  
+ echo   color: #fff;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\orders\orders.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\orders\orders.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo tbody tr:hover {  1>>src\app\orders\orders.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo .btn {  1>>src\app\orders\orders.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\orders\orders.component.scss  
+ echo   font-size: 14px;  1>>src\app\orders\orders.component.scss  
+ echo   background: #d6eaff;  1>>src\app\orders\orders.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\orders\orders.component.scss  
+ echo   border-radius: 5px;  1>>src\app\orders\orders.component.scss  
+ echo   cursor: pointer;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo .btn:hover {  1>>src\app\orders\orders.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\orders\orders.component.scss  
+ echo   table {  1>>src\app\orders\orders.component.scss  
+ echo     min-width: 500px;  1>>src\app\orders\orders.component.scss  
+ echo   }  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\orders\orders.component.scss  
+ echo   table {  1>>src\app\orders\orders.component.scss  
+ echo     min-width: 400px;  1>>src\app\orders\orders.component.scss  
+ echo   }  1>>src\app\orders\orders.component.scss  
+ echo }  1>>src\app\orders\orders.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component orders  
+ exit /b 
+) 
+) 
+Generating component orders
+[32mCREATE[39m src/app/orders/orders.component.html (22 bytes)
+[32mCREATE[39m src/app/orders/orders.component.spec.ts (615 bytes)
+[32mCREATE[39m src/app/orders/orders.component.ts (226 bytes)
+[32mCREATE[39m src/app/orders/orders.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component payments  
+ ng g c payments --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\payments\payments.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\payments\payments.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\payments\payments.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\payments\payments.component.ts  
+ echo @Component({  1>>src\app\payments\payments.component.ts  
+ echo   selector: 'app-payments',  1>>src\app\payments\payments.component.ts  
+ echo   standalone: true,  1>>src\app\payments\payments.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\payments\payments.component.ts  
+ echo   templateUrl: './payments.component.html',  1>>src\app\payments\payments.component.ts  
+ echo   styleUrls: ['./payments.component.scss']  1>>src\app\payments\payments.component.ts  
+ echo }  1>>src\app\payments\payments.component.ts  
+ echo )   1>>src\app\payments\payments.component.ts  
+ echo export class paymentsComponent implements OnInit {   1>>src\app\payments\payments.component.ts  
+ echo   tables: string[] = [];  1>>src\app\payments\payments.component.ts  
+ echo   dataMap: any = {};  1>>src\app\payments\payments.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\payments\payments.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\payments\payments.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\payments\payments.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\payments\payments.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\payments\payments.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\payments\payments.component.ts  
+ echo         this.dataMap = data;  1>>src\app\payments\payments.component.ts  
+ echo         } else {  1>>src\app\payments\payments.component.ts  
+ echo           this.tables = [];   1>>src\app\payments\payments.component.ts  
+ echo           this.dataMap = {};    1>>src\app\payments\payments.component.ts  
+ echo         }   1>>src\app\payments\payments.component.ts  
+ echo       }   1>>src\app\payments\payments.component.ts  
+ echo       );   1>>src\app\payments\payments.component.ts  
+ echo     }   1>>src\app\payments\payments.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\payments\payments.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\payments\payments.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\payments\payments.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\payments\payments.component.ts  
+ echo     }  1>>src\app\payments\payments.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\payments\payments.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\payments\payments.component.ts  
+ echo       return Object.values(row);   1>>src\app\payments\payments.component.ts  
+ echo   }   1>>src\app\payments\payments.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\payments\payments.component.ts  
+ echo     viewpayments(payments: any): void {  1>>src\app\payments\payments.component.ts  
+ echo     console.log('View payments:', payments);  1>>src\app\payments\payments.component.ts  
+ echo     alert(`Viewing payments: ${JSON.stringify(payments, null, 2)}`);  1>>src\app\payments\payments.component.ts  
+ echo }  1>>src\app\payments\payments.component.ts  
+ echo     updatepayments(payments: any): void {  1>>src\app\payments\payments.component.ts  
+ echo     this.router.navigate(['/update', 'payments', payments._id]);  1>>src\app\payments\payments.component.ts  
+ echo   }  1>>src\app\payments\payments.component.ts  
+ echo     deletepayments(paymentsId: string): void {  1>>src\app\payments\payments.component.ts  
+ echo     console.log('Delete payments ID:', paymentsId);  1>>src\app\payments\payments.component.ts  
+ echo     this.service.deleteItem('payments',paymentsId).subscribe(   1>>src\app\payments\payments.component.ts  
+ echo        response => {  1>>src\app\payments\payments.component.ts  
+ echo            console.log('payments deleted successfully', response);  1>>src\app\payments\payments.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\payments\payments.component.ts  
+ echo            this.dataMap['payments'] = this.dataMap['payments'].filter((payments: any) => payments._id !== paymentsId);  1>>src\app\payments\payments.component.ts  
+ echo            alert('payments Deleted!');  1>>src\app\payments\payments.component.ts  
+ echo        },  1>>src\app\payments\payments.component.ts  
+ echo        error => {  1>>src\app\payments\payments.component.ts  
+ echo            console.error('Error deleting payments:', error);  1>>src\app\payments\payments.component.ts  
+ echo            alert('Failed to delete payments!');  1>>src\app\payments\payments.component.ts  
+ echo        }   1>>src\app\payments\payments.component.ts  
+ echo     );  1>>src\app\payments\payments.component.ts  
+ echo }  1>>src\app\payments\payments.component.ts  
+ echo }  1>>src\app\payments\payments.component.ts  
+ echo <p>payments Table:</p>    1>src\app\payments\payments.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\payments\payments.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\payments\payments.component.html  
+ echo <table border="1" *ngIf="table === 'payments'">  1>>src\app\payments\payments.component.html  
+ echo <thead >  1>>src\app\payments\payments.component.html  
+ echo <tr>  1>>src\app\payments\payments.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\payments\payments.component.html  
+ echo <th>Actions</th>  1>>src\app\payments\payments.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\payments\payments.component.html  
+ echo <tbody>  1>>src\app\payments\payments.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\payments\payments.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\payments\payments.component.html  
+ echo <td>   1>>src\app\payments\payments.component.html  
+ echo    <button (click)="viewpayments(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\payments\payments.component.html  
+ echo    <button (click)="updatepayments(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\payments\payments.component.html  
+ echo    <button (click)="deletepayments(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\payments\payments.component.html  
+ echo </td>   1>>src\app\payments\payments.component.html  
+ echo </tr>  1>>src\app\payments\payments.component.html  
+ echo </tbody>  1>>src\app\payments\payments.component.html  
+ echo </table>  1>>src\app\payments\payments.component.html  
+ echo </div>  1>>src\app\payments\payments.component.html  
+ echo </div>  1>>src\app\payments\payments.component.html  
+ echo table {  1>>src\app\payments\payments.component.scss  
+ echo   width: 100%;  1>>src\app\payments\payments.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\payments\payments.component.scss  
+ echo   min-width: 500px;  1>>src\app\payments\payments.component.scss  
+ echo   table-layout: auto;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo th, td {  1>>src\app\payments\payments.component.scss  
+ echo   padding: 8px;  1>>src\app\payments\payments.component.scss  
+ echo   text-align: center;  1>>src\app\payments\payments.component.scss  
+ echo   font-size: 12px;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo thead {  1>>src\app\payments\payments.component.scss  
+ echo   background: #014e85;  1>>src\app\payments\payments.component.scss  
+ echo   color: #fff;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\payments\payments.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\payments\payments.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo tbody tr:hover {  1>>src\app\payments\payments.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo .btn {  1>>src\app\payments\payments.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\payments\payments.component.scss  
+ echo   font-size: 14px;  1>>src\app\payments\payments.component.scss  
+ echo   background: #d6eaff;  1>>src\app\payments\payments.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\payments\payments.component.scss  
+ echo   border-radius: 5px;  1>>src\app\payments\payments.component.scss  
+ echo   cursor: pointer;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo .btn:hover {  1>>src\app\payments\payments.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\payments\payments.component.scss  
+ echo   table {  1>>src\app\payments\payments.component.scss  
+ echo     min-width: 500px;  1>>src\app\payments\payments.component.scss  
+ echo   }  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\payments\payments.component.scss  
+ echo   table {  1>>src\app\payments\payments.component.scss  
+ echo     min-width: 400px;  1>>src\app\payments\payments.component.scss  
+ echo   }  1>>src\app\payments\payments.component.scss  
+ echo }  1>>src\app\payments\payments.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component payments  
+ exit /b 
+) 
+) 
+Generating component payments
+[32mCREATE[39m src/app/payments/payments.component.html (24 bytes)
+[32mCREATE[39m src/app/payments/payments.component.spec.ts (629 bytes)
+[32mCREATE[39m src/app/payments/payments.component.ts (234 bytes)
+[32mCREATE[39m src/app/payments/payments.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component tickets  
+ ng g c tickets --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\tickets\tickets.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\tickets\tickets.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\tickets\tickets.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\tickets\tickets.component.ts  
+ echo @Component({  1>>src\app\tickets\tickets.component.ts  
+ echo   selector: 'app-tickets',  1>>src\app\tickets\tickets.component.ts  
+ echo   standalone: true,  1>>src\app\tickets\tickets.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\tickets\tickets.component.ts  
+ echo   templateUrl: './tickets.component.html',  1>>src\app\tickets\tickets.component.ts  
+ echo   styleUrls: ['./tickets.component.scss']  1>>src\app\tickets\tickets.component.ts  
+ echo }  1>>src\app\tickets\tickets.component.ts  
+ echo )   1>>src\app\tickets\tickets.component.ts  
+ echo export class ticketsComponent implements OnInit {   1>>src\app\tickets\tickets.component.ts  
+ echo   tables: string[] = [];  1>>src\app\tickets\tickets.component.ts  
+ echo   dataMap: any = {};  1>>src\app\tickets\tickets.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\tickets\tickets.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\tickets\tickets.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\tickets\tickets.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\tickets\tickets.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\tickets\tickets.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\tickets\tickets.component.ts  
+ echo         this.dataMap = data;  1>>src\app\tickets\tickets.component.ts  
+ echo         } else {  1>>src\app\tickets\tickets.component.ts  
+ echo           this.tables = [];   1>>src\app\tickets\tickets.component.ts  
+ echo           this.dataMap = {};    1>>src\app\tickets\tickets.component.ts  
+ echo         }   1>>src\app\tickets\tickets.component.ts  
+ echo       }   1>>src\app\tickets\tickets.component.ts  
+ echo       );   1>>src\app\tickets\tickets.component.ts  
+ echo     }   1>>src\app\tickets\tickets.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\tickets\tickets.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\tickets\tickets.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\tickets\tickets.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\tickets\tickets.component.ts  
+ echo     }  1>>src\app\tickets\tickets.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\tickets\tickets.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\tickets\tickets.component.ts  
+ echo       return Object.values(row);   1>>src\app\tickets\tickets.component.ts  
+ echo   }   1>>src\app\tickets\tickets.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\tickets\tickets.component.ts  
+ echo     viewtickets(tickets: any): void {  1>>src\app\tickets\tickets.component.ts  
+ echo     console.log('View tickets:', tickets);  1>>src\app\tickets\tickets.component.ts  
+ echo     alert(`Viewing tickets: ${JSON.stringify(tickets, null, 2)}`);  1>>src\app\tickets\tickets.component.ts  
+ echo }  1>>src\app\tickets\tickets.component.ts  
+ echo     updatetickets(tickets: any): void {  1>>src\app\tickets\tickets.component.ts  
+ echo     this.router.navigate(['/update', 'tickets', tickets._id]);  1>>src\app\tickets\tickets.component.ts  
+ echo   }  1>>src\app\tickets\tickets.component.ts  
+ echo     deletetickets(ticketsId: string): void {  1>>src\app\tickets\tickets.component.ts  
+ echo     console.log('Delete tickets ID:', ticketsId);  1>>src\app\tickets\tickets.component.ts  
+ echo     this.service.deleteItem('tickets',ticketsId).subscribe(   1>>src\app\tickets\tickets.component.ts  
+ echo        response => {  1>>src\app\tickets\tickets.component.ts  
+ echo            console.log('tickets deleted successfully', response);  1>>src\app\tickets\tickets.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\tickets\tickets.component.ts  
+ echo            this.dataMap['tickets'] = this.dataMap['tickets'].filter((tickets: any) => tickets._id !== ticketsId);  1>>src\app\tickets\tickets.component.ts  
+ echo            alert('tickets Deleted!');  1>>src\app\tickets\tickets.component.ts  
+ echo        },  1>>src\app\tickets\tickets.component.ts  
+ echo        error => {  1>>src\app\tickets\tickets.component.ts  
+ echo            console.error('Error deleting tickets:', error);  1>>src\app\tickets\tickets.component.ts  
+ echo            alert('Failed to delete tickets!');  1>>src\app\tickets\tickets.component.ts  
+ echo        }   1>>src\app\tickets\tickets.component.ts  
+ echo     );  1>>src\app\tickets\tickets.component.ts  
+ echo }  1>>src\app\tickets\tickets.component.ts  
+ echo }  1>>src\app\tickets\tickets.component.ts  
+ echo <p>tickets Table:</p>    1>src\app\tickets\tickets.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\tickets\tickets.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\tickets\tickets.component.html  
+ echo <table border="1" *ngIf="table === 'tickets'">  1>>src\app\tickets\tickets.component.html  
+ echo <thead >  1>>src\app\tickets\tickets.component.html  
+ echo <tr>  1>>src\app\tickets\tickets.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\tickets\tickets.component.html  
+ echo <th>Actions</th>  1>>src\app\tickets\tickets.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\tickets\tickets.component.html  
+ echo <tbody>  1>>src\app\tickets\tickets.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\tickets\tickets.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\tickets\tickets.component.html  
+ echo <td>   1>>src\app\tickets\tickets.component.html  
+ echo    <button (click)="viewtickets(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\tickets\tickets.component.html  
+ echo    <button (click)="updatetickets(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\tickets\tickets.component.html  
+ echo    <button (click)="deletetickets(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\tickets\tickets.component.html  
+ echo </td>   1>>src\app\tickets\tickets.component.html  
+ echo </tr>  1>>src\app\tickets\tickets.component.html  
+ echo </tbody>  1>>src\app\tickets\tickets.component.html  
+ echo </table>  1>>src\app\tickets\tickets.component.html  
+ echo </div>  1>>src\app\tickets\tickets.component.html  
+ echo </div>  1>>src\app\tickets\tickets.component.html  
+ echo table {  1>>src\app\tickets\tickets.component.scss  
+ echo   width: 100%;  1>>src\app\tickets\tickets.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\tickets\tickets.component.scss  
+ echo   min-width: 500px;  1>>src\app\tickets\tickets.component.scss  
+ echo   table-layout: auto;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo th, td {  1>>src\app\tickets\tickets.component.scss  
+ echo   padding: 8px;  1>>src\app\tickets\tickets.component.scss  
+ echo   text-align: center;  1>>src\app\tickets\tickets.component.scss  
+ echo   font-size: 12px;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo thead {  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #014e85;  1>>src\app\tickets\tickets.component.scss  
+ echo   color: #fff;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo tbody tr:hover {  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo .btn {  1>>src\app\tickets\tickets.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\tickets\tickets.component.scss  
+ echo   font-size: 14px;  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #d6eaff;  1>>src\app\tickets\tickets.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\tickets\tickets.component.scss  
+ echo   border-radius: 5px;  1>>src\app\tickets\tickets.component.scss  
+ echo   cursor: pointer;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo .btn:hover {  1>>src\app\tickets\tickets.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\tickets\tickets.component.scss  
+ echo   table {  1>>src\app\tickets\tickets.component.scss  
+ echo     min-width: 500px;  1>>src\app\tickets\tickets.component.scss  
+ echo   }  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\tickets\tickets.component.scss  
+ echo   table {  1>>src\app\tickets\tickets.component.scss  
+ echo     min-width: 400px;  1>>src\app\tickets\tickets.component.scss  
+ echo   }  1>>src\app\tickets\tickets.component.scss  
+ echo }  1>>src\app\tickets\tickets.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component tickets  
+ exit /b 
+) 
+) 
+Generating component tickets
+[32mCREATE[39m src/app/tickets/tickets.component.html (23 bytes)
+[32mCREATE[39m src/app/tickets/tickets.component.spec.ts (622 bytes)
+[32mCREATE[39m src/app/tickets/tickets.component.ts (230 bytes)
+[32mCREATE[39m src/app/tickets/tickets.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component transactions  
+ ng g c transactions --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\transactions\transactions.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\transactions\transactions.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\transactions\transactions.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\transactions\transactions.component.ts  
+ echo @Component({  1>>src\app\transactions\transactions.component.ts  
+ echo   selector: 'app-transactions',  1>>src\app\transactions\transactions.component.ts  
+ echo   standalone: true,  1>>src\app\transactions\transactions.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\transactions\transactions.component.ts  
+ echo   templateUrl: './transactions.component.html',  1>>src\app\transactions\transactions.component.ts  
+ echo   styleUrls: ['./transactions.component.scss']  1>>src\app\transactions\transactions.component.ts  
+ echo }  1>>src\app\transactions\transactions.component.ts  
+ echo )   1>>src\app\transactions\transactions.component.ts  
+ echo export class transactionsComponent implements OnInit {   1>>src\app\transactions\transactions.component.ts  
+ echo   tables: string[] = [];  1>>src\app\transactions\transactions.component.ts  
+ echo   dataMap: any = {};  1>>src\app\transactions\transactions.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\transactions\transactions.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\transactions\transactions.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\transactions\transactions.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\transactions\transactions.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\transactions\transactions.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\transactions\transactions.component.ts  
+ echo         this.dataMap = data;  1>>src\app\transactions\transactions.component.ts  
+ echo         } else {  1>>src\app\transactions\transactions.component.ts  
+ echo           this.tables = [];   1>>src\app\transactions\transactions.component.ts  
+ echo           this.dataMap = {};    1>>src\app\transactions\transactions.component.ts  
+ echo         }   1>>src\app\transactions\transactions.component.ts  
+ echo       }   1>>src\app\transactions\transactions.component.ts  
+ echo       );   1>>src\app\transactions\transactions.component.ts  
+ echo     }   1>>src\app\transactions\transactions.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\transactions\transactions.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\transactions\transactions.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\transactions\transactions.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\transactions\transactions.component.ts  
+ echo     }  1>>src\app\transactions\transactions.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\transactions\transactions.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\transactions\transactions.component.ts  
+ echo       return Object.values(row);   1>>src\app\transactions\transactions.component.ts  
+ echo   }   1>>src\app\transactions\transactions.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\transactions\transactions.component.ts  
+ echo     viewtransactions(transactions: any): void {  1>>src\app\transactions\transactions.component.ts  
+ echo     console.log('View transactions:', transactions);  1>>src\app\transactions\transactions.component.ts  
+ echo     alert(`Viewing transactions: ${JSON.stringify(transactions, null, 2)}`);  1>>src\app\transactions\transactions.component.ts  
+ echo }  1>>src\app\transactions\transactions.component.ts  
+ echo     updatetransactions(transactions: any): void {  1>>src\app\transactions\transactions.component.ts  
+ echo     this.router.navigate(['/update', 'transactions', transactions._id]);  1>>src\app\transactions\transactions.component.ts  
+ echo   }  1>>src\app\transactions\transactions.component.ts  
+ echo     deletetransactions(transactionsId: string): void {  1>>src\app\transactions\transactions.component.ts  
+ echo     console.log('Delete transactions ID:', transactionsId);  1>>src\app\transactions\transactions.component.ts  
+ echo     this.service.deleteItem('transactions',transactionsId).subscribe(   1>>src\app\transactions\transactions.component.ts  
+ echo        response => {  1>>src\app\transactions\transactions.component.ts  
+ echo            console.log('transactions deleted successfully', response);  1>>src\app\transactions\transactions.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\transactions\transactions.component.ts  
+ echo            this.dataMap['transactions'] = this.dataMap['transactions'].filter((transactions: any) => transactions._id !== transactionsId);  1>>src\app\transactions\transactions.component.ts  
+ echo            alert('transactions Deleted!');  1>>src\app\transactions\transactions.component.ts  
+ echo        },  1>>src\app\transactions\transactions.component.ts  
+ echo        error => {  1>>src\app\transactions\transactions.component.ts  
+ echo            console.error('Error deleting transactions:', error);  1>>src\app\transactions\transactions.component.ts  
+ echo            alert('Failed to delete transactions!');  1>>src\app\transactions\transactions.component.ts  
+ echo        }   1>>src\app\transactions\transactions.component.ts  
+ echo     );  1>>src\app\transactions\transactions.component.ts  
+ echo }  1>>src\app\transactions\transactions.component.ts  
+ echo }  1>>src\app\transactions\transactions.component.ts  
+ echo <p>transactions Table:</p>    1>src\app\transactions\transactions.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\transactions\transactions.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\transactions\transactions.component.html  
+ echo <table border="1" *ngIf="table === 'transactions'">  1>>src\app\transactions\transactions.component.html  
+ echo <thead >  1>>src\app\transactions\transactions.component.html  
+ echo <tr>  1>>src\app\transactions\transactions.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\transactions\transactions.component.html  
+ echo <th>Actions</th>  1>>src\app\transactions\transactions.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\transactions\transactions.component.html  
+ echo <tbody>  1>>src\app\transactions\transactions.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\transactions\transactions.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\transactions\transactions.component.html  
+ echo <td>   1>>src\app\transactions\transactions.component.html  
+ echo    <button (click)="viewtransactions(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\transactions\transactions.component.html  
+ echo    <button (click)="updatetransactions(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\transactions\transactions.component.html  
+ echo    <button (click)="deletetransactions(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\transactions\transactions.component.html  
+ echo </td>   1>>src\app\transactions\transactions.component.html  
+ echo </tr>  1>>src\app\transactions\transactions.component.html  
+ echo </tbody>  1>>src\app\transactions\transactions.component.html  
+ echo </table>  1>>src\app\transactions\transactions.component.html  
+ echo </div>  1>>src\app\transactions\transactions.component.html  
+ echo </div>  1>>src\app\transactions\transactions.component.html  
+ echo table {  1>>src\app\transactions\transactions.component.scss  
+ echo   width: 100%;  1>>src\app\transactions\transactions.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\transactions\transactions.component.scss  
+ echo   min-width: 500px;  1>>src\app\transactions\transactions.component.scss  
+ echo   table-layout: auto;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo th, td {  1>>src\app\transactions\transactions.component.scss  
+ echo   padding: 8px;  1>>src\app\transactions\transactions.component.scss  
+ echo   text-align: center;  1>>src\app\transactions\transactions.component.scss  
+ echo   font-size: 12px;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo thead {  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #014e85;  1>>src\app\transactions\transactions.component.scss  
+ echo   color: #fff;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo tbody tr:hover {  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo .btn {  1>>src\app\transactions\transactions.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\transactions\transactions.component.scss  
+ echo   font-size: 14px;  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #d6eaff;  1>>src\app\transactions\transactions.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\transactions\transactions.component.scss  
+ echo   border-radius: 5px;  1>>src\app\transactions\transactions.component.scss  
+ echo   cursor: pointer;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo .btn:hover {  1>>src\app\transactions\transactions.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\transactions\transactions.component.scss  
+ echo   table {  1>>src\app\transactions\transactions.component.scss  
+ echo     min-width: 500px;  1>>src\app\transactions\transactions.component.scss  
+ echo   }  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\transactions\transactions.component.scss  
+ echo   table {  1>>src\app\transactions\transactions.component.scss  
+ echo     min-width: 400px;  1>>src\app\transactions\transactions.component.scss  
+ echo   }  1>>src\app\transactions\transactions.component.scss  
+ echo }  1>>src\app\transactions\transactions.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component transactions  
+ exit /b 
+) 
+) 
+Generating component transactions
+[32mCREATE[39m src/app/transactions/transactions.component.html (28 bytes)
+[32mCREATE[39m src/app/transactions/transactions.component.spec.ts (657 bytes)
+[32mCREATE[39m src/app/transactions/transactions.component.ts (250 bytes)
+[32mCREATE[39m src/app/transactions/transactions.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component invoices  
+ ng g c invoices --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\invoices\invoices.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\invoices\invoices.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\invoices\invoices.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\invoices\invoices.component.ts  
+ echo @Component({  1>>src\app\invoices\invoices.component.ts  
+ echo   selector: 'app-invoices',  1>>src\app\invoices\invoices.component.ts  
+ echo   standalone: true,  1>>src\app\invoices\invoices.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\invoices\invoices.component.ts  
+ echo   templateUrl: './invoices.component.html',  1>>src\app\invoices\invoices.component.ts  
+ echo   styleUrls: ['./invoices.component.scss']  1>>src\app\invoices\invoices.component.ts  
+ echo }  1>>src\app\invoices\invoices.component.ts  
+ echo )   1>>src\app\invoices\invoices.component.ts  
+ echo export class invoicesComponent implements OnInit {   1>>src\app\invoices\invoices.component.ts  
+ echo   tables: string[] = [];  1>>src\app\invoices\invoices.component.ts  
+ echo   dataMap: any = {};  1>>src\app\invoices\invoices.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\invoices\invoices.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\invoices\invoices.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\invoices\invoices.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\invoices\invoices.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\invoices\invoices.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\invoices\invoices.component.ts  
+ echo         this.dataMap = data;  1>>src\app\invoices\invoices.component.ts  
+ echo         } else {  1>>src\app\invoices\invoices.component.ts  
+ echo           this.tables = [];   1>>src\app\invoices\invoices.component.ts  
+ echo           this.dataMap = {};    1>>src\app\invoices\invoices.component.ts  
+ echo         }   1>>src\app\invoices\invoices.component.ts  
+ echo       }   1>>src\app\invoices\invoices.component.ts  
+ echo       );   1>>src\app\invoices\invoices.component.ts  
+ echo     }   1>>src\app\invoices\invoices.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\invoices\invoices.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\invoices\invoices.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\invoices\invoices.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\invoices\invoices.component.ts  
+ echo     }  1>>src\app\invoices\invoices.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\invoices\invoices.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\invoices\invoices.component.ts  
+ echo       return Object.values(row);   1>>src\app\invoices\invoices.component.ts  
+ echo   }   1>>src\app\invoices\invoices.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\invoices\invoices.component.ts  
+ echo     viewinvoices(invoices: any): void {  1>>src\app\invoices\invoices.component.ts  
+ echo     console.log('View invoices:', invoices);  1>>src\app\invoices\invoices.component.ts  
+ echo     alert(`Viewing invoices: ${JSON.stringify(invoices, null, 2)}`);  1>>src\app\invoices\invoices.component.ts  
+ echo }  1>>src\app\invoices\invoices.component.ts  
+ echo     updateinvoices(invoices: any): void {  1>>src\app\invoices\invoices.component.ts  
+ echo     this.router.navigate(['/update', 'invoices', invoices._id]);  1>>src\app\invoices\invoices.component.ts  
+ echo   }  1>>src\app\invoices\invoices.component.ts  
+ echo     deleteinvoices(invoicesId: string): void {  1>>src\app\invoices\invoices.component.ts  
+ echo     console.log('Delete invoices ID:', invoicesId);  1>>src\app\invoices\invoices.component.ts  
+ echo     this.service.deleteItem('invoices',invoicesId).subscribe(   1>>src\app\invoices\invoices.component.ts  
+ echo        response => {  1>>src\app\invoices\invoices.component.ts  
+ echo            console.log('invoices deleted successfully', response);  1>>src\app\invoices\invoices.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\invoices\invoices.component.ts  
+ echo            this.dataMap['invoices'] = this.dataMap['invoices'].filter((invoices: any) => invoices._id !== invoicesId);  1>>src\app\invoices\invoices.component.ts  
+ echo            alert('invoices Deleted!');  1>>src\app\invoices\invoices.component.ts  
+ echo        },  1>>src\app\invoices\invoices.component.ts  
+ echo        error => {  1>>src\app\invoices\invoices.component.ts  
+ echo            console.error('Error deleting invoices:', error);  1>>src\app\invoices\invoices.component.ts  
+ echo            alert('Failed to delete invoices!');  1>>src\app\invoices\invoices.component.ts  
+ echo        }   1>>src\app\invoices\invoices.component.ts  
+ echo     );  1>>src\app\invoices\invoices.component.ts  
+ echo }  1>>src\app\invoices\invoices.component.ts  
+ echo }  1>>src\app\invoices\invoices.component.ts  
+ echo <p>invoices Table:</p>    1>src\app\invoices\invoices.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\invoices\invoices.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\invoices\invoices.component.html  
+ echo <table border="1" *ngIf="table === 'invoices'">  1>>src\app\invoices\invoices.component.html  
+ echo <thead >  1>>src\app\invoices\invoices.component.html  
+ echo <tr>  1>>src\app\invoices\invoices.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\invoices\invoices.component.html  
+ echo <th>Actions</th>  1>>src\app\invoices\invoices.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\invoices\invoices.component.html  
+ echo <tbody>  1>>src\app\invoices\invoices.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\invoices\invoices.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\invoices\invoices.component.html  
+ echo <td>   1>>src\app\invoices\invoices.component.html  
+ echo    <button (click)="viewinvoices(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\invoices\invoices.component.html  
+ echo    <button (click)="updateinvoices(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\invoices\invoices.component.html  
+ echo    <button (click)="deleteinvoices(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\invoices\invoices.component.html  
+ echo </td>   1>>src\app\invoices\invoices.component.html  
+ echo </tr>  1>>src\app\invoices\invoices.component.html  
+ echo </tbody>  1>>src\app\invoices\invoices.component.html  
+ echo </table>  1>>src\app\invoices\invoices.component.html  
+ echo </div>  1>>src\app\invoices\invoices.component.html  
+ echo </div>  1>>src\app\invoices\invoices.component.html  
+ echo table {  1>>src\app\invoices\invoices.component.scss  
+ echo   width: 100%;  1>>src\app\invoices\invoices.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\invoices\invoices.component.scss  
+ echo   min-width: 500px;  1>>src\app\invoices\invoices.component.scss  
+ echo   table-layout: auto;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo th, td {  1>>src\app\invoices\invoices.component.scss  
+ echo   padding: 8px;  1>>src\app\invoices\invoices.component.scss  
+ echo   text-align: center;  1>>src\app\invoices\invoices.component.scss  
+ echo   font-size: 12px;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo thead {  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #014e85;  1>>src\app\invoices\invoices.component.scss  
+ echo   color: #fff;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo tbody tr:hover {  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo .btn {  1>>src\app\invoices\invoices.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\invoices\invoices.component.scss  
+ echo   font-size: 14px;  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #d6eaff;  1>>src\app\invoices\invoices.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\invoices\invoices.component.scss  
+ echo   border-radius: 5px;  1>>src\app\invoices\invoices.component.scss  
+ echo   cursor: pointer;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo .btn:hover {  1>>src\app\invoices\invoices.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\invoices\invoices.component.scss  
+ echo   table {  1>>src\app\invoices\invoices.component.scss  
+ echo     min-width: 500px;  1>>src\app\invoices\invoices.component.scss  
+ echo   }  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\invoices\invoices.component.scss  
+ echo   table {  1>>src\app\invoices\invoices.component.scss  
+ echo     min-width: 400px;  1>>src\app\invoices\invoices.component.scss  
+ echo   }  1>>src\app\invoices\invoices.component.scss  
+ echo }  1>>src\app\invoices\invoices.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component invoices  
+ exit /b 
+) 
+) 
+Generating component invoices
+[32mCREATE[39m src/app/invoices/invoices.component.html (24 bytes)
+[32mCREATE[39m src/app/invoices/invoices.component.spec.ts (629 bytes)
+[32mCREATE[39m src/app/invoices/invoices.component.ts (234 bytes)
+[32mCREATE[39m src/app/invoices/invoices.component.scss (0 bytes)
+</tr>
+ECHO is on.
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(
+echo Generating component products  
+ ng g c products --standalone  
+ echo import { Component, OnInit } from '@angular/core';  1>src\app\products\products.component.ts  
+ echo import { SharedService } from '../services/shared.service';  1>>src\app\products\products.component.ts  
+ echo import { CommonModule } from '@angular/common';  1>>src\app\products\products.component.ts  
+ echo import { Router } from '@angular/router';  1>>src\app\products\products.component.ts  
+ echo @Component({  1>>src\app\products\products.component.ts  
+ echo   selector: 'app-products',  1>>src\app\products\products.component.ts  
+ echo   standalone: true,  1>>src\app\products\products.component.ts  
+ echo   imports: [CommonModule],  1>>src\app\products\products.component.ts  
+ echo   templateUrl: './products.component.html',  1>>src\app\products\products.component.ts  
+ echo   styleUrls: ['./products.component.scss']  1>>src\app\products\products.component.ts  
+ echo }  1>>src\app\products\products.component.ts  
+ echo )   1>>src\app\products\products.component.ts  
+ echo export class productsComponent implements OnInit {   1>>src\app\products\products.component.ts  
+ echo   tables: string[] = [];  1>>src\app\products\products.component.ts  
+ echo   dataMap: any = {};  1>>src\app\products\products.component.ts  
+ echo   constructor(private service: SharedService, private router: Router) {}  1>>src\app\products\products.component.ts  
+ echo   ngOnInit(): void {  1>>src\app\products\products.component.ts  
+ echo       this.service.getUsers().subscribe(data => {  1>>src\app\products\products.component.ts  
+ echo       console.log("Données reçues:", data );  1>>src\app\products\products.component.ts  
+ echo       if (data && typeof data === "object") {  1>>src\app\products\products.component.ts  
+ echo         this.tables = Object.keys(data);  1>>src\app\products\products.component.ts  
+ echo         this.dataMap = data;  1>>src\app\products\products.component.ts  
+ echo         } else {  1>>src\app\products\products.component.ts  
+ echo           this.tables = [];   1>>src\app\products\products.component.ts  
+ echo           this.dataMap = {};    1>>src\app\products\products.component.ts  
+ echo         }   1>>src\app\products\products.component.ts  
+ echo       }   1>>src\app\products\products.component.ts  
+ echo       );   1>>src\app\products\products.component.ts  
+ echo     }   1>>src\app\products\products.component.ts  
+ echo //get columns for the table dynamically   1>>src\app\products\products.component.ts  
+ echo     getColumns(table: string): string[] {  1>>src\app\products\products.component.ts  
+ echo         return this.dataMap[table] && this.dataMap[table].length > 0   1>>src\app\products\products.component.ts  
+ echo           ? Object.keys(this.dataMap[table][0]) : [];  1>>src\app\products\products.component.ts  
+ echo     }  1>>src\app\products\products.component.ts  
+ echo  // Get the values of a row dynamically   1>>src\app\products\products.component.ts  
+ echo     getValues(row: any): any[] {   1>>src\app\products\products.component.ts  
+ echo       return Object.values(row);   1>>src\app\products\products.component.ts  
+ echo   }   1>>src\app\products\products.component.ts  
+ echo // New Methods for the Buttons  1>>src\app\products\products.component.ts  
+ echo     viewproducts(products: any): void {  1>>src\app\products\products.component.ts  
+ echo     console.log('View products:', products);  1>>src\app\products\products.component.ts  
+ echo     alert(`Viewing products: ${JSON.stringify(products, null, 2)}`);  1>>src\app\products\products.component.ts  
+ echo }  1>>src\app\products\products.component.ts  
+ echo     updateproducts(products: any): void {  1>>src\app\products\products.component.ts  
+ echo     this.router.navigate(['/update', 'products', products._id]);  1>>src\app\products\products.component.ts  
+ echo   }  1>>src\app\products\products.component.ts  
+ echo     deleteproducts(productsId: string): void {  1>>src\app\products\products.component.ts  
+ echo     console.log('Delete products ID:', productsId);  1>>src\app\products\products.component.ts  
+ echo     this.service.deleteItem('products',productsId).subscribe(   1>>src\app\products\products.component.ts  
+ echo        response => {  1>>src\app\products\products.component.ts  
+ echo            console.log('products deleted successfully', response);  1>>src\app\products\products.component.ts  
+ echo            // Mise à jour de l'affichage des données après suppression  1>>src\app\products\products.component.ts  
+ echo            this.dataMap['products'] = this.dataMap['products'].filter((products: any) => products._id !== productsId);  1>>src\app\products\products.component.ts  
+ echo            alert('products Deleted!');  1>>src\app\products\products.component.ts  
+ echo        },  1>>src\app\products\products.component.ts  
+ echo        error => {  1>>src\app\products\products.component.ts  
+ echo            console.error('Error deleting products:', error);  1>>src\app\products\products.component.ts  
+ echo            alert('Failed to delete products!');  1>>src\app\products\products.component.ts  
+ echo        }   1>>src\app\products\products.component.ts  
+ echo     );  1>>src\app\products\products.component.ts  
+ echo }  1>>src\app\products\products.component.ts  
+ echo }  1>>src\app\products\products.component.ts  
+ echo <p>products Table:</p>    1>src\app\products\products.component.html  
+ echo <div *ngIf="tables.length > 0" >  1>>src\app\products\products.component.html  
+ echo <div *ngFor="let table of tables" >  1>>src\app\products\products.component.html  
+ echo <table border="1" *ngIf="table === 'products'">  1>>src\app\products\products.component.html  
+ echo <thead >  1>>src\app\products\products.component.html  
+ echo <tr>  1>>src\app\products\products.component.html  
+ echo <th *ngFor="let column of getColumns(table)">{{ column }}</th>  1>>src\app\products\products.component.html  
+ echo <th>Actions</th>  1>>src\app\products\products.component.html  
+ echo </tr>  
+ echo </thead>  1>>src\app\products\products.component.html  
+ echo <tbody>  1>>src\app\products\products.component.html  
+ echo <tr *ngFor="let row of dataMap[table]" >  1>>src\app\products\products.component.html  
+ echo <td *ngFor="let column of getColumns(table)" >{{ row[column] }}</td>  1>>src\app\products\products.component.html  
+ echo <td>   1>>src\app\products\products.component.html  
+ echo    <button (click)="viewproducts(row)"class="btn"><i class="fas fa-eye"></i>View</button>   1>>src\app\products\products.component.html  
+ echo    <button (click)="updateproducts(row)"class="btn"><i class="fas fa-pencil-alt"></i>Update</button>   1>>src\app\products\products.component.html  
+ echo    <button (click)="deleteproducts(row._id)"class="btn"><i class="fas fa-trash-alt"></i>delete</button>   1>>src\app\products\products.component.html  
+ echo </td>   1>>src\app\products\products.component.html  
+ echo </tr>  1>>src\app\products\products.component.html  
+ echo </tbody>  1>>src\app\products\products.component.html  
+ echo </table>  1>>src\app\products\products.component.html  
+ echo </div>  1>>src\app\products\products.component.html  
+ echo </div>  1>>src\app\products\products.component.html  
+ echo table {  1>>src\app\products\products.component.scss  
+ echo   width: 100%;  1>>src\app\products\products.component.scss  
+ echo   border-collapse: collapse;  1>>src\app\products\products.component.scss  
+ echo   min-width: 500px;  1>>src\app\products\products.component.scss  
+ echo   table-layout: auto;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo th, td {  1>>src\app\products\products.component.scss  
+ echo   padding: 8px;  1>>src\app\products\products.component.scss  
+ echo   text-align: center;  1>>src\app\products\products.component.scss  
+ echo   font-size: 12px;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo thead {  1>>src\app\products\products.component.scss  
+ echo   background: #014e85;  1>>src\app\products\products.component.scss  
+ echo   color: #fff;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo tbody tr:nth-child(odd) {  1>>src\app\products\products.component.scss  
+ echo   background: #f9f9f9;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo tbody tr:nth-child(even) {  1>>src\app\products\products.component.scss  
+ echo   background: #f4f7fa;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo tbody tr:hover {  1>>src\app\products\products.component.scss  
+ echo   background: #eaf2f8;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo .btn {  1>>src\app\products\products.component.scss  
+ echo   padding: 8px 12px;  1>>src\app\products\products.component.scss  
+ echo   font-size: 14px;  1>>src\app\products\products.component.scss  
+ echo   background: #d6eaff;  1>>src\app\products\products.component.scss  
+ echo   border: 1px solid #a9d5ff;  1>>src\app\products\products.component.scss  
+ echo   border-radius: 5px;  1>>src\app\products\products.component.scss  
+ echo   cursor: pointer;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo .btn:hover {  1>>src\app\products\products.component.scss  
+ echo   background: #b8d8ff;  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo @media (max-width: 768px) {  1>>src\app\products\products.component.scss  
+ echo   table {  1>>src\app\products\products.component.scss  
+ echo     min-width: 500px;  1>>src\app\products\products.component.scss  
+ echo   }  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo @media (max-width: 480px) {  1>>src\app\products\products.component.scss  
+ echo   table {  1>>src\app\products\products.component.scss  
+ echo     min-width: 400px;  1>>src\app\products\products.component.scss  
+ echo   }  1>>src\app\products\products.component.scss  
+ echo }  1>>src\app\products\products.component.scss  
+ echo   
+ if errorlevel 1 (
+echo Failed to generate component products  
+ exit /b 
+) 
+) 
+Generating component products
+[32mCREATE[39m src/app/products/products.component.html (24 bytes)
+[32mCREATE[39m src/app/products/products.component.spec.ts (629 bytes)
+[32mCREATE[39m src/app/products/products.component.ts (234 bytes)
+[32mCREATE[39m src/app/products/products.component.scss (0 bytes)
+</tr>
+ECHO is on.
+===== Creating shared service for components =====
+[32mCREATE[39m src/app/services/shared.service.spec.ts (373 bytes)
+[32mCREATE[39m src/app/services/shared.service.ts (144 bytes)
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-clients></app-clients>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-deliveries></app-deliveries>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-employees></app-employees>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-orders></app-orders>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-payments></app-payments>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-tickets></app-tickets>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-transactions></app-transactions>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-invoices></app-invoices>  1>>src\index.html ) 
+
+C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\angular-project>(echo     <app-products></app-products>  1>>src\index.html ) 
+===== Installing dependencies... This may take some time... =====
+ Volume in drive C has no label.
+ Volume Serial Number is 3E40-856D
+
+ Directory of C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular
+
+06/05/2025  04:30 PM    <DIR>          .
+06/05/2025  04:11 AM    <DIR>          ..
+06/05/2025  04:30 PM    <DIR>          angular-project
+06/05/2025  04:30 PM                 0 log_frontend_1749137439652-g5myxqqv.txt
+06/05/2025  03:44 AM            60,728 run-Angular.bat
+               2 File(s)         60,728 bytes
+               3 Dir(s)  245,759,516,672 bytes free
+scriptDir .. C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular\
+cd .. C:\Users\mouna\Desktop\DevStart_structureback - Copy\Backend-Website\controllers\Frontend\Angular
+        1 dir(s) moved.
+Press any key to continue . . . ^C
