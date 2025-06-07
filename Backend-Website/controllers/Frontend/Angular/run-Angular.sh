@@ -1,5 +1,3 @@
-#!/bin/bash
-
 echo "===== Setting up Angular Frontend ====="
 
 # Définir les chemins
@@ -13,56 +11,65 @@ PORT="$6"
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 projectDir="$scriptDir/angular-project"
 projectName="angular-project"
-FRONTEND_DIR="$ROOT_DIR%"
-# API et fichier temporaire
+FRONTEND_DIR="$ROOT_DIR"
 
+# API et fichier temporaire
 jsonFile="$(mktemp)"
 echo "{\"host\":\"$host\",\"dbName\":\"$DdbName\",\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\"}" > "$jsonFile"
 
-apiUrl="http://localhost:3000/api/tablenames"
+apiUrl="http://localhost:5000/api/tablenames"
+responseFull="/tmp/tablenames.full.json"
 responseFile="/tmp/tablenames.json"
-# Récupération silencieuse des données
-curl -s -X POST -H "Content-Type: application/json" -d @"$jsonFile" "$apiUrl" > /tmp/tablenames.json
+responseCode="/tmp/tablenames.code"
 
-# Supprimer le fichier JSON temporaire
+# Récupération des données avec capture du code HTTP
+curl -s -w "\n%{http_code}" -X POST -H "Content-Type: application/json" -d @"$jsonFile" "$apiUrl" > "$responseFull"
 rm "$jsonFile"
 
-# Vérifier si curl a échoué
-if [ $? -ne 0 ]; then
-    echo "Failed to retrieve data from the API!"
+# Extraire JSON et code HTTP
+tail -n 1 "$responseFull" > "$responseCode"
+head -n -1 "$responseFull" > "$responseFile"
+status_code=$(cat "$responseCode")
+
+# Vérifier le code HTTP
+if [ "$status_code" -ne 200 ]; then
+    echo "API call failed with status code $status_code"
+    cat "$responseFile"
+    rm "$responseFile" "$responseFull" "$responseCode"
     exit 1
 fi
+
+# Afficher la réponse brute (debug)
+echo "API response:"
+cat "$responseFile"
 
 # Vérifier si la réponse est un JSON valide
 if ! jq . "$responseFile" >/dev/null 2>&1; then
     echo "Invalid JSON returned by the API!"
     cat "$responseFile"
-    rm "$responseFile"
+    rm "$responseFile" "$responseFull" "$responseCode"
     exit 1
 fi
 
-# Extraire les noms de tables
-items=$(jq -r '.[]' "$jsonFile" | sed 's/[\[\]_-]//g' | tr '\n' ' ')
+# Extraire les noms de tables depuis la réponse
+items=$(jq -r '.[]' "$responseFile" | sed 's/[\[\]_-]//g' | tr '\n' ' ')
 
 # Vérification de la liste extraite
 if [ -z "$items" ]; then
     echo "Failed to parse table names from the API!"
-    rm "$jsonFile"
+    rm "$responseFile" "$responseFull" "$responseCode"
     exit 1
 fi
 
 # Nettoyage
-rm "$jsonFile"
+rm "$responseFile" "$responseFull" "$responseCode"
 
 # Créer le projet Angular si nécessaire
 if [ ! -d "$projectDir" ]; then
     echo "Creating Angular project..."
     ng new "$projectName" --routing --style=scss --skip-install --defaults
     cd "$projectDir"
-else
-    echo "Angular project already exists!"
-    cd "$projectDir"
-fi
+
 
 # Create styles.scss
 cat > src/styles.scss << 'EOL'
@@ -1005,12 +1012,8 @@ cat >> src/index.html << 'EOL'
   </body>
 </html>
 EOL
-
+fi
 # Move project to final location
 mv "$projectDir" "$FRONTEND_DIR"
 
 echo "===== All components and shared service generated successfully! ====="
-
-# Start the Angular server
-echo "Starting the server..."
-cd "$FRONTEND_DIR"

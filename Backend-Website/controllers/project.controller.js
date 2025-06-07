@@ -21,10 +21,10 @@ const generateProject = async (req, res) => {
         password
     };
 
-    const scriptPath = backend ? path.join(__dirname, "Backend", backend, `run-${backend}-${TypeDB}.bat`) : null;
-    const scriptPath2 = frontend ? path.join(__dirname, "Frontend", frontend, `run-${frontend}.bat`) : null;
+    const scriptPath = backend ? path.join(__dirname, "Backend", backend, `run-${backend}-${TypeDB}.sh`) : null;
+    const scriptPath2 = frontend ? path.join(__dirname, "Frontend", frontend, `run-${frontend}.sh`) : null;
 
-    const uniqueId = Date.now() + '-' + Math.random().toString(36).substring(2, 10);
+    const uniqueId = `${Date. now()}-${crypto. randomBytes(4) . toString( 'hex' )}`.replace(/[^a-zA-Z0-9 _-]/g, '');
     const secret = process.env.DOWNLOAD_SECRET || 'supersecret';
     const token = crypto.createHmac('sha256', secret).update(uniqueId).digest('hex');
     const generatedBaseDir = path.join(__dirname, 'generated'); 
@@ -55,7 +55,7 @@ const generateProject = async (req, res) => {
                 return reject(new Error(`Backend script not found: ${scriptPath}`));
             }
             // Pass parameters to backend script
-            const command = `sh "${scriptPath}" "${host || ''}" "${dbName || ''}" "${username || ''}" "${password || ''}" "${port || ''}" "${projectDir}" > log_backend_${uniqueId}.txt 2>&1`;
+            const command = `bash "${scriptPath}" "${host || ''}" "${dbName || ''}" "${username || ''}" "${password || ''}" "${port || ''}" "${projectDir}" > log_backend_${uniqueId}.txt 2>&1`;
             console.log(`Executing backend command: ${command}`);
             exec(command, (err, stdout, stderr) => {
                 const logFilePath = path.join(process.cwd(), `log_backend_${uniqueId}.txt`);
@@ -96,7 +96,7 @@ const generateProject = async (req, res) => {
             const dbPass = password || ''; // Be cautious about command line passwords
 
             // Arguments passed: 1=projectDir, 2=dbHost, 3=databaseName, 4=dbUser, 5=dbPass
-            const command = `sh "${scriptPath2}" "${projectDir}" "${dbHost}" "${databaseName}" "${dbUser}" "${dbPass}" > log_frontend_${uniqueId}.txt 2>&1`;
+            const command = `bash "${scriptPath2}" "${projectDir}" "${dbHost}" "${databaseName}" "${dbUser}" "${dbPass}" > log_frontend_${uniqueId}.txt 2>&1`;
             // --- End Modification --- 
 
             console.log(`Executing frontend command: ${command} in CWD: ${frontendCwd}`);

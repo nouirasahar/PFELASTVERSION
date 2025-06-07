@@ -47,11 +47,6 @@ export class HomeComponent {
       icon: 'fas fa-layer-group'
     },
     {
-      title: '🌐 Shared Environments',
-      description: 'Execution will take place in shared environments (Docker, virtual machines, or physical machines)',
-      icon: 'fas fa-rocket'
-    },
-    {
       title: '📊 Admin Dashboard',
       description: 'Easily visualize and manage your database through an automatically generated dynamic interface.',
       icon: 'fas fa-chart-line'

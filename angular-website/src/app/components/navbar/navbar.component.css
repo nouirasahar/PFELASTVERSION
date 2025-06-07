@@ -1,36 +1,105 @@
 .navbar {
-  @apply flex items-center justify-between py-4 px-6 shadow-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
   background: linear-gradient(to right, #E0E7FF, #E9D5FF, #BAE6FD);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  z-index: 10;
 }
 
 .brand {
-  @apply flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer no-underline;
-  margin-right: 1rem; /* Reduced margin-right to move logo closer to the other elements */
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
-.icon {
-  color: #7C3AED;
+.logo-img {
+  height: 55px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding-left: 9px;
 }
 
 .title {
-  @apply text-2xl font-semibold;
+  font-size: 2rem;
+  font-weight: 550;
+  color: #4F46E5;
+  margin: 0;
+  padding-left: -7px; 
+  line-height: 1;
+  cursor:pointer;
 }
 
 .nav-links {
-  @apply flex items-center gap-4;
-  margin-left: 1rem; /* Adjusted to move the links closer to the logo */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
 }
 
 .link {
-  @apply text-gray-700 hover:text-gray-900 text-base no-underline;
+  text-decoration: none;
+  color: #374151;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #111827;
+}
+
+.doc-button {
+  background-color: #4d94ff;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.doc-button:hover {
+  background-color: #003d99;
 }
 
 .get-started {
-  @apply px-4 py-2 text-white text-base rounded-full transition-colors no-underline;
-  background-color: #7C3AED;
-  /* No change here for the "Get Started" button */
+  background-color:#7C3AED;
+  color: white;
+  padding: 12px 30px;
+  font-size: 0.9rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
 .get-started:hover {
   background-color: #6D28D9;
+}
+media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 16px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .doc-button, .get-started {
+    width: 100%;
+    text-align: center;
+  }
 }

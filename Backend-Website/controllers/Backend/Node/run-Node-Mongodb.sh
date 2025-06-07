@@ -1,33 +1,18 @@
 #!/bin/bash
 
-echo "===== Setting up Node.js Backend Mysql ====="
-# Vérification de l'installation de Node.js
-if ! command -v node &> /dev/null; then
-      "Node.js n'est pas installé. Veuillez l'installer depuis https://nodejs.org/"
-    exit 1
-fi
-
-# Génération d'un timestamp unique
-timestamp=$(date +"%Y%m%d_%H%M%S")
-
-# Définition des répertoires
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PARENT_DIR="$(dirname "$SCRIPT_DIR")"
-PROJET_DIR="$PARENT_DIR/projet"
-BACKEND_DIR="$PROJET_DIR/backend_$timestamp"
-
-CONFIG_DIR="$BACKEND_DIR/Config"
-ROUTES_DIR="$BACKEND_DIR/Routes"
-
-# Création des répertoires
-mkdir -p "$CONFIG_DIR" "$ROUTES_DIR"
+echo "===== Setting up Node.js Backend Mongodb ====="
 
 # Capture des paramètres
 export DB_URI="$1"
 export DB_NAME="$2"
 export USERNAME="$3"
 export PASSWORD="$4"
-export PORT="${5:-3306}"  # Port par défaut : 3000
+export PORT="${5:-3000}" 
+export ROOT_DIR="$6"
+# Définition des répertoires
+BACKEND_DIR="$ROOT_DIR/backend"
+CONFIG_DIR="$BACKEND_DIR/Config"
+ROUTES_DIR="$BACKEND_DIR/Routes"
 # Affichage des paramètres pour vérification
 echo "DB_URI: $DB_URI"
 echo "DB_NAME: $DB_NAME"
@@ -35,22 +20,55 @@ echo "USERNAME: $USERNAME"
 echo "PASSWORD: $PASSWORD"
 echo "PORT: $PORT"
 
+# Vérification de l'installation de Node.js
+if ! command -v node &> /dev/null; then
+      "Node.js n'est pas installé. Veuillez l'installer depuis https://nodejs.org/"
+    exit 1
+fi
+
+# Create the backend folder
+if [ ! -d "$BACKEND_DIR" ]; then
+    mkdir -p "$BACKEND_DIR"
+    echo "Backend folder created."
+else
+    echo "Backend folder already exists."
+fi
+
+# Create the Config folder
+if [ ! -d "$CONFIG_DIR" ]; then
+    mkdir -p "$CONFIG_DIR"
+    echo "Config folder created."
+else
+    echo "Config folder already exists."
+fi
+
+# Create the Routes folder
+if [ ! -d "$ROUTES_DIR" ]; then
+    mkdir -p "$ROUTES_DIR"
+    echo "Routes folder created."
+else
+    echo "Routes folder already exists."
+fi
+
 # Création du fichier package.json
 cat > "$BACKEND_DIR/package.json" <<EOF
 {
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mysql2": "^3.14.1",
+    "mongodb": "^5.5.0",
     "cors": "^2.8.5"
   }
 }
 EOF
+
+
 # Création du fichier index.js
 cat > "$BACKEND_DIR/index.js" <<EOF
 const express = require('express');
@@ -61,130 +79,106 @@ const apiRoutes = require('./Routes/routes.js');
 app.use(express.json());
 app.use(cors());
 app.use('/api', apiRoutes);
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+
+app.listen( 3000, () => console.log('Serveur démarré sur http://localhost:$PORT'));
 EOF
+
 # Création du fichier dbConnection.js
 cat > "$CONFIG_DIR/dbConnection.js" <<EOF
-const mysql = require('mysql2/promise');
-// Use environment variables
-const USER = process.env.USERNAME || 'root';
-const PASS = process.env.PASSWORD || '';
-const HOST = process.env.DB_URI || 'localhost';
-const DB_NAME = process.env.DB_NAME || 'test';
-const PORT = process.env.PORT || 3306;
-let connection;
+const { MongoClient } = require('mongodb');
+let client;
 
-async function connect() {
+async function connect({
+  host = '$DB_URI',
+  dbName = '$DB_NAME',
+  USER = '$USERNAME',
+  PASS = '$PASSWORD'
+}) {
+  const auth = USER && PASS ? \`\${encodeURIComponent(USER)}:\${encodeURIComponent(PASS)}@\` : '';
+  const uri = \`mongodb+srv://\${auth}\${host}/\${dbName}?retryWrites=true&w=majority\`;
+  console.log(\`Connexion à MongoDB Atlas sur \${uri}\`);
+
   try {
-    if (connection && connection.connection && connection.connection.state !== 'disconnected') {
-      return connection;
+    if (client) {
+      console.log('Fermeture de la connexion précédente');
+      await client.close();
     }
 
-    console.log(`Connecting to MySQL at '${host}:${port}', database: '${dbName}'`);
-
-    connection = await mysql.createConnection({
-      host: HOST,
-      port: PORT,
-      user: USER,
-      password: PASS,
-      database: DB_NAME
+    client = await MongoClient.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
 
-    console.log('→ MySQL connection established');
-    return connection;
+    console.log('Connexion établie à MongoDB');
+    return client.db(dbName);
   } catch (err) {
-    console.error('Connection failed:', err);
+    console.error('Échec de la connexion :', err.message);
+    throw err;
   }
 }
 
 module.exports = { connect };
-
 EOF
 
-
 # Création du fichier services.js
-cat > "$CONFIG_DIR/services.js" <<'EOF'
-const { connect } = require('./dbConnection.js'); // import connect function
+cat > "$CONFIG_DIR/services.js" <<EOF
+const { connect } = require('./dbConnection.js');
+const { MongoClient, ObjectId } = require('mongodb');
 
-// Fetch all data from all tables  
-async function fetchData() { 
-      const conn = await connect({ host:'$DB_URI', port: '$PORT' , dbName: '$DB_NAME', });  
-    const [tables] = await conn.query("SHOW TABLES");  
-  const data = {}; 
-  for (const row of tables) { 
-    const tableName = Object.values(row)[0]; 
-    const [rows] = await conn.query(`SELECT * FROM \`${tableName}\``); 
-    const formattedRows = rows.map(item => {  
-      if ('id' in item) {  
-        const { id, ...rest } = item; 
-        return { ...rest, _id: id };  
-      }  
-      return item;  
-    }); 
-    data[tableName] = formattedRows;  
-  }  
-  return data;   
-} 
+const connectionParams = {
+  host: '$DB_URI',
+  dbName: '$DB_NAME',
+  USER: '$USERNAME',
+  PASS: '$PASSWORD'
+};
 
-// Fetch all table names 
-async function getTableNames() { 
-  const conn = await connect({ host:'$DB_URI', port: '$PORT', dbName: '$DB_NAME', });
-  const [results] = await conn.query('SHOW TABLES'); 
-  return results.map(row => Object.values(row)[0]); 
-}  
+async function fetchData() {
+  const db = await connect(connectionParams);
+  const data = {};
+  for (const { name } of await db.listCollections().toArray()) {
+    data[name] = await db.collection(name).find().toArray();
+  }
+  return data;
+}
 
-// Fetch a single item by its ID from a specific table  
-async function getItemById(table, id) { 
-  const conn = await connect({ host:'$DB_URI', port: '$PORT' , dbName: '$DB_NAME', });
-  const [rows] = await conn.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id]);  
-  if (rows[0]) {  
-     const { id, ...rest } = rows[0];  
-     return { ...rest, _id: id }; 
-  }  
-  return null;  
-} 
+async function getTableNames() {
+  return (await (await connect(connectionParams))
+    .listCollections().toArray()).map(c => c.name);
+}
 
-// Update a specific item by its ID 
-async function updateItemById(table, id, updateFields) {  
-  const conn = await connect({ host:'$DB_URI', port: '$PORT', dbName: '$DB_NAME', });
-  const keys = Object.keys(updateFields); 
-  const values = Object.values(updateFields); 
-  const cleanKeys = [];  
-  const cleanValues = []; 
-  for (let i = 0; i < keys.length; i++) { 
-    if (keys[i] !== '_id') { 
-      cleanKeys.push(keys[i]);  
-      cleanValues.push(values[i]); 
-    } 
-  } 
-  if (cleanKeys.length === 0) return null; 
-  const setClause = cleanKeys.map(key => `\`${key}\` = ?`).join(', '); 
-  const sql = `UPDATE \`${table}\` SET ${setClause} WHERE id = ?`;  
-  const [result] = await conn.query(sql, [...cleanValues, id]);               
-  return result;  
-} 
+async function getItemById(collection, id) {
+  const db = await connect(connectionParams);
+  return db.collection(collection).findOne({ _id: new ObjectId(id) });
+}
 
-// Delete an item by its ID  
-async function deleteItemById(table, id) {  
-  const conn = await connect({ host:'$DB_URI', port: '$PORT', dbName: '$DB_NAME', });
-  const [result] = await conn.query(`DELETE FROM \`${table}\` WHERE id = ?`, [id]); 
-  return result;   
-} 
+async function updateItemById(collection, id, updateFields) {
+  const db = await connect(connectionParams);
+  delete updateFields._id;
+  return db
+    .collection(collection)
+    .updateOne(
+      { _id: new ObjectId(id) },
+      { \$set: updateFields }
+    );
+}
 
-// Drop a complete table from the database 
-async function deleteTableByName(tableName) { 
-  const conn = await connect({ host:'$DB_URI', port: '$PORT', dbName: '$DB_NAME', });
-  const [result] = await conn.query(`DROP TABLE \`${tableName}\``);
-  return result;  
-} 
+async function deleteItemById(collection, id) {
+  const db = await connect(connectionParams);
+  return db.collection(collection).deleteOne({ _id: new ObjectId(id) });
+}
+
+async function deleteCollectionByName(collectionName) {
+  const db = await connect(connectionParams);
+  return db.collection(collectionName).drop();
+}
 
 module.exports = {
   fetchData,
   getTableNames,
-  getItemById,
   updateItemById,
   deleteItemById,
-  deleteTableByName
+  deleteCollectionByName,
+  getItemById
 };
 EOF
 
@@ -192,26 +186,27 @@ EOF
 cat > "$ROUTES_DIR/routes.js" <<EOF
 const express = require('express');
 const router = express.Router();
-const {fetchData, getTableNames, getItemById, updateItemById,deleteItemById,deleteTableByName} = require('../Config/services');
+const {
+  fetchData,
+  getTableNames,
+  updateItemById,
+  deleteItemById,
+  deleteCollectionByName,
+  getItemById
+} = require('../Config/services.js');
 
-router.get('/getall', async (req, res) => {
-try {
-    const data = await fetchData();
-    res.json(data);
-} catch (err) {
-  console.error('Error fetching data:', err);
-  res.status(500).json({ error: 'Server error while fetching data' });
-}
-});
-//route to get the table names
+router.get('/getall', (req, res) =>
+  fetchData().then(data => res.json(data)).catch(err => res.status(500).send('Erreur'))
+);
+
 router.get('/tablenames', async (req, res) => {
   try {
     const names = await getTableNames();
     console.log(names);
     res.json(names);
   } catch (err) {
-    console.error('Error fetching table names:', err);
-    res.status(500).json({ error: 'Server error while fetching table names' });
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
@@ -220,51 +215,42 @@ router.get('/:table/:id', async (req, res) => {
   try {
     const item = await getItemById(table, id);
     if (!item) {
-      return res.status(404).json({ error: 'Item not found' });
+      return res.status(404).json({ error: 'Élément non trouvé' });
     }
     res.json(item);
   } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 });
 
 router.put('/update/:table/:id', async (req, res) => {
-const { table, id } = req.params;
   try {
-    const result = await updateItemById(table, id, req.body);
-    res.json({ success: result.affectedRows > 0, result });
+    console.log('Requête PUT /update', req.params, 'corps:', req.body);
+    const result = await updateItemById(req.params.table, req.params.id, req.body);
+    const success = result.modifiedCount > 0;
+    res.json({ success, matched: result.matchedCount, modified: result.modifiedCount });
   } catch (err) {
-    console.error('Error updating item:', err);
-    res.status(500).json({ error: 'Server error while updating item' });
+    console.error('Erreur lors de la mise à jour:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
-router.delete('/delete/:table/:id', async (req, res) => {
-    const { table, id } = req.params; 
-    try { 
-      const result = await deleteItemById(table, id);
-      res.json({ success: result.affectedRows > 0 });
-    } catch (err) {
-        console.error('Error deleting item:', err); 
-        res.status(500).json({ error: 'Server error while deleting item' });  
-    }
+
+router.delete('/delete/:table/:id', (req, res) => {
+  deleteItemById(req.params.table, req.params.id)
+    .then(result => res.json(result))
+    .catch(err => res.status(500).json({ error: err.message }));
 });
+
 router.delete('/delete/:table', async (req, res) => {
-  const { table } = req.params;
   try {
-    await deleteTableByName(table);
-    res.json({ message: 'Table ${table} deleted successfully' });
+    await deleteCollectionByName(req.params.table);
+    res.json({ message: \`\${req.params.table} collection supprimée avec succès\` });
   } catch (err) {
-    console.error('Error deleting table:', err);
-    res.status(500).json({ error: 'Server error while deleting table' }); 
+    res.status(500).json({ error: 'Échec de la suppression de la collection' });
   }
 });
+
 module.exports = router;
 EOF
-# Installation des dépendances
-cd "$BACKEND_DIR" || exit 1
-echo "Installation des dépendances..."
-npm install express mysql2 cors
 
-# Démarrage du serveur
-echo "Démarrage du serveur Node.js..."
-node index.js
+
