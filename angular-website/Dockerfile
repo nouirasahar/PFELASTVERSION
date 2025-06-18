@@ -1,4 +1,3 @@
-
 # Use Node.js as the base image
 FROM node:20 AS build
 

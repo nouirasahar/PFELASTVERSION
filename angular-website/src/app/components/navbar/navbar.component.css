@@ -18,12 +18,12 @@
 }
 
 .logo-img {
-  height: 55px;
+  height: 60px;
   width: auto;
   display: inline-block;
   vertical-align: middle;
   margin: 0;
-  padding-left: 9px;
+  padding-left: 7px; 
 }
 
 .title {
@@ -31,9 +31,10 @@
   font-weight: 550;
   color: #4F46E5;
   margin: 0;
-  padding-left: -7px; 
+  padding-left: 0;
   line-height: 1;
-  cursor:pointer;
+  cursor: pointer;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .nav-links {
@@ -63,6 +64,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   transition: background-color 0.3s ease;
 }
 
@@ -76,7 +78,9 @@
   padding: 12px 30px;
   font-size: 0.9rem;
   border-radius: 9999px;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   text-decoration: none;
+  font-weight:500;
   transition: background-color 0.3s ease;
 }
 

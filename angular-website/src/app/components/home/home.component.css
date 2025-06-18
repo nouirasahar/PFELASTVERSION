@@ -10,7 +10,7 @@
 .hero {
   position: relative;
   text-align: center;
-  width: 100%; /* Full width */
+  width: 3000 px; /* Full width */
   padding: 5rem 0;
   margin: 0 auto; 
   background: linear-gradient(135deg, #f5f0ff 0%, #ebe9ff 50%, #e8f7ff 100%);

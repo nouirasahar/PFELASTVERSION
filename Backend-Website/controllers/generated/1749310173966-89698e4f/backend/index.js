@@ -7,4 +7,4 @@ app.use(express.json());
 app.use(cors());
 app.use('/api', apiRoutes);
 
-app.listen(3306, () => console.log('Serveur démarré sur http://localhost:3306'));
+app.listen( 3000, () => console.log('Serveur démarré sur http://localhost:3000'));
